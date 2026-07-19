@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- React & ReactDOM for component runtime -->
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #FFFFFF; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+    a { color: #2F5FE0; text-decoration: none; }
+    a:hover { color: #2448B8; }
+    ::selection { background: #C7D2FE; }
+    @keyframes floatSlow { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes auroraDrift { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-4%,3%) scale(1.08); } }
+    @keyframes particleFloat { 0%,100% { transform: translateY(0) scale(1); opacity: 0.5; } 50% { transform: translateY(-16px) scale(1.2); opacity: 0.9; } }
+    @keyframes orbitPulse { 0%,100% { opacity: 0.35; } 50% { opacity: 0.7; } }
+    @keyframes heroKenBurns { 0% { transform: scale(1) translate(0,0); } 100% { transform: scale(1.12) translate(-1.5%,-1%); } }
+  </style>
+</helmet>
+
+<div style="width:100%;background:#FFFFFF;color:#111827;overflow-x:clip;">
+
+  <!-- NAV -->
+  <header style="position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.97);border-bottom:1px solid #E5E7EB;">
+    <div style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,4vw,48px);height:72px;display:flex;align-items:center;justify-content:space-between;gap:24px;">
+      <div style="display:flex;align-items:center;gap:12px;flex-shrink:0;">
+        <div style="width:34px;height:34px;border-radius:9px;overflow:hidden;flex-shrink:0;">
+          <img src="tixible-logo-icon.png" alt="Tixible" style="width:100%;height:100%;object-fit:cover;transform:scale(1.2);" />
+        </div>
+        <span style="font-size:19px;font-weight:800;letter-spacing:-0.02em;color:#111827;">Tixible</span>
+      </div>
+
+      <nav style="display:{{ desktopNavDisplay }};align-items:center;gap:2px;">
+        <div style="position:relative;" onMouseEnter="{{ openProducts }}" onMouseLeave="{{ closeProducts }}">
+          <button style="background:none;border:none;font-size:14.5px;font-weight:500;color:#374151;padding:10px 14px;border-radius:8px;cursor:pointer;" style-hover="{&quot;background&quot;:&quot;#F3F4F6&quot;,&quot;color&quot;:&quot;#111827&quot;}">Products</button>
+          <sc-if value="{{ productsOpen }}">
+            <div style="position:absolute;top:calc(100% + 8px);left:-8px;width:340px;background:#FFFFFF;border:1px solid #E5E7EB;border-radius:14px;box-shadow:0 20px 40px -12px rgba(17,24,39,0.16);padding:10px;">
+              <sc-for list="{{ products }}" as="p" hint-placeholder-count="6">
+                <a href="#ecosystem" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;color:#111827;" style-hover="{&quot;background&quot;:&quot;#F9FAFB&quot;}">
+                  <div style="width:8px;height:8px;border-radius:2px;background:{{ p.color }};flex-shrink:0;"></div>
+                  <div style="flex:1;">
+                    <div style="font-size:14px;font-weight:600;">{{ p.name }}</div>
+                    <div style="font-size:12.5px;color:#6B7280;">{{ p.tagline }}</div>
+                  </div>
+                  <div style="font-size:10.5px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:{{ p.statusColor }};">{{ p.status }}</div>
+                </a>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+        <a href="#why" style="font-size:14.5px;font-weight:500;color:#374151;padding:10px 14px;border-radius:8px;transition:background 0.2s,color 0.2s;" style-hover="{&quot;background&quot;:&quot;#F3F4F6&quot;,&quot;color&quot;:&quot;#111827&quot;}">Solutions</a>
+        <a href="#contact" style="font-size:14.5px;font-weight:500;color:#374151;padding:10px 14px;border-radius:8px;transition:background 0.2s,color 0.2s;" style-hover="{&quot;background&quot;:&quot;#F3F4F6&quot;,&quot;color&quot;:&quot;#111827&quot;}">Developers</a>
+        <a href="about.html" style="font-size:14.5px;font-weight:500;color:#374151;padding:10px 14px;border-radius:8px;transition:background 0.2s,color 0.2s;" style-hover="{&quot;background&quot;:&quot;#F3F4F6&quot;,&quot;color&quot;:&quot;#111827&quot;}">Company</a>
+        <a href="pricing.html" style="font-size:14.5px;font-weight:500;color:#374151;padding:10px 14px;border-radius:8px;transition:background 0.2s,color 0.2s;" style-hover="{&quot;background&quot;:&quot;#F3F4F6&quot;,&quot;color&quot;:&quot;#111827&quot;}">Pricing</a>
+        <a href="security.html" style="font-size:14.5px;font-weight:500;color:#374151;padding:10px 14px;border-radius:8px;transition:background 0.2s,color 0.2s;" style-hover="{&quot;background&quot;:&quot;#F3F4F6&quot;,&quot;color&quot;:&quot;#111827&quot;}">Security</a>
+        <a href="status.html" style="font-size:14.5px;font-weight:500;color:#374151;padding:10px 14px;border-radius:8px;transition:background 0.2s,color 0.2s;" style-hover="{&quot;background&quot;:&quot;#F3F4F6&quot;,&quot;color&quot;:&quot;#111827&quot;}">Status</a>
+      </nav>
+
+      <div style="display:{{ desktopNavDisplay }};align-items:center;gap:10px;flex-shrink:0;">
+        <a href="#contact" style="font-size:14.5px;font-weight:600;color:#374151;padding:10px 16px;">Sign In</a>
+        <a href="#contact" style="font-size:14.5px;font-weight:600;color:#FFFFFF;background:#2F5FE0;padding:10px 18px;border-radius:8px;" style-hover="{&quot;background&quot;:&quot;#2448B8&quot;,&quot;boxShadow&quot;:&quot;0 10px 28px -6px rgba(47,95,224,0.5)&quot;,&quot;transform&quot;:&quot;translateY(-1px)&quot;}" style-active="{&quot;transform&quot;:&quot;scale(0.97)&quot;}">Get Started</a>
+      </div>
+
+      <button onClick="{{ toggleMobileMenu }}" style="display:{{ mobileNavDisplay }};flex-direction:column;align-items:center;background:none;border:none;padding:8px;cursor:pointer;flex-shrink:0;">
+        <div style="width:22px;height:2px;background:#111827;margin-bottom:5px;"></div>
+        <div style="width:22px;height:2px;background:#111827;margin-bottom:5px;"></div>
+        <div style="width:22px;height:2px;background:#111827;"></div>
+      </button>
+    </div>
+
+    <sc-if value="{{ mobileMenuOpen }}">
+      <div style="display:{{ mobileNavDisplay }};flex-direction:column;padding:8px 20px 24px;border-top:1px solid #E5E7EB;background:#FFFFFF;gap:2px;">
+        <a href="#ecosystem" style="padding:12px 4px;font-size:15px;font-weight:600;color:#111827;border-bottom:1px solid #F3F4F6;">Products</a>
+        <a href="#why" style="padding:12px 4px;font-size:15px;font-weight:600;color:#111827;border-bottom:1px solid #F3F4F6;">Solutions</a>
+        <a href="#contact" style="padding:12px 4px;font-size:15px;font-weight:600;color:#111827;border-bottom:1px solid #F3F4F6;">Developers</a>
+        <a href="about.html" style="padding:12px 4px;font-size:15px;font-weight:600;color:#111827;border-bottom:1px solid #F3F4F6;">Company</a>
+        <a href="pricing.html" style="padding:12px 4px;font-size:15px;font-weight:600;color:#111827;border-bottom:1px solid #F3F4F6;">Pricing</a>
+        <a href="security.html" style="padding:12px 4px;font-size:15px;font-weight:600;color:#111827;border-bottom:1px solid #F3F4F6;">Security</a>
+        <a href="status.html" style="padding:12px 4px;font-size:15px;font-weight:600;color:#111827;">Status</a>
+        <div style="display:flex;gap:10px;margin-top:16px;">
+          <a href="#contact" style="flex:1;text-align:center;font-size:14.5px;font-weight:600;color:#374151;border:1px solid #E5E7EB;padding:11px;border-radius:8px;">Sign In</a>
+          <a href="#contact" style="flex:1;text-align:center;font-size:14.5px;font-weight:600;color:#FFFFFF;background:#2F5FE0;padding:11px;border-radius:8px;">Get Started</a>
+        </div>
+      </div>
+    </sc-if>
+  </header>
+
+  <!-- HERO -->
+  <section style="position:relative;overflow:hidden;">
+    <div style="position:relative;z-index:2;max-width:1280px;margin:0 auto;padding:clamp(56px,9vw,120px) clamp(20px,4vw,48px) clamp(48px,7vw,96px);display:grid;grid-template-columns:{{ heroGridCols }};gap:clamp(32px,5vw,64px);align-items:center;">
+    <div>
+      <div style="width:64px;height:64px;border-radius:16px;overflow:hidden;margin-bottom:28px;box-shadow:0 12px 28px -10px rgba(47,95,224,0.35);">
+        <img src="tixible-logo-icon.png" alt="Tixible" style="width:100%;height:100%;object-fit:cover;transform:scale(1.2);" />
+      </div>
+      <div style="display:inline-flex;align-items:center;gap:8px;background:#EEF2FF;color:#2448B8;font-size:13px;font-weight:600;padding:7px 14px;border-radius:100px;margin-bottom:24px;">
+        <div style="width:6px;height:6px;border-radius:50%;background:#2F5FE0;"></div>
+        Building the Tixible ecosystem
+      </div>
+      <h1 style="font-size:clamp(36px,5.2vw,60px);line-height:1.06;letter-spacing:-0.03em;font-weight:800;color:#111827;margin:0 0 22px;text-wrap:pretty;">A technology company building a family of products for modern digital work.</h1>
+      <p style="font-size:clamp(16px,1.6vw,19px);line-height:1.6;color:#4B5563;margin:0 0 34px;max-width:560px;text-wrap:pretty;">Tixible designs and operates a growing ecosystem of software — starting with Tixible Cloud and expanding into AI, storage, inventory, project management, and connectivity. One company, one design philosophy, many products.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:14px;">
+        <a href="#contact" style="font-size:15.5px;font-weight:600;color:#FFFFFF;background:#2F5FE0;padding:14px 26px;border-radius:9px;" style-hover="{&quot;background&quot;:&quot;#2448B8&quot;,&quot;boxShadow&quot;:&quot;0 10px 28px -6px rgba(47,95,224,0.5)&quot;,&quot;transform&quot;:&quot;translateY(-1px)&quot;}" style-active="{&quot;transform&quot;:&quot;scale(0.97)&quot;}">Get Started</a>
+        <a href="#ecosystem" style="font-size:15.5px;font-weight:600;color:#111827;background:#FFFFFF;border:1px solid #D1D5DB;padding:14px 26px;border-radius:9px;" style-hover="{&quot;borderColor&quot;:&quot;#9CA3AF&quot;,&quot;transform&quot;:&quot;translateY(-1px)&quot;}" style-active="{&quot;transform&quot;:&quot;scale(0.97)&quot;}">Explore Projects</a>
+      </div>
+    </div>
+
+    <div style="position:relative;height:clamp(320px,38vw,440px);perspective:1000px;" onMouseMove="{{ onHeroMove }}" onMouseLeave="{{ onHeroLeave }}">
+      <sc-if value="{{ showHeroFX }}">
+        <div style="position:absolute;inset:-10%;background:radial-gradient(45% 45% at 30% 20%, rgba(47,95,224,0.14) 0%, transparent 70%), radial-gradient(40% 40% at 80% 70%, rgba(96,165,250,0.12) 0%, transparent 70%);border-radius:24px;animation:auroraDrift 14s ease-in-out infinite;will-change:transform;"></div>
+        <div style="position:absolute;top:14%;left:12%;width:5px;height:5px;border-radius:50%;background:#2F5FE0;animation:particleFloat 6s ease-in-out infinite;"></div>
+        <div style="position:absolute;top:30%;left:88%;width:6px;height:6px;border-radius:50%;background:#93C5FD;animation:particleFloat 7s ease-in-out infinite 1.4s;"></div>
+      </sc-if>
+      <div style="position:absolute;inset:0;background:radial-gradient(120% 120% at 100% 0%, #EEF2FF 0%, transparent 60%);border-radius:24px;"></div>
+      <div style="position:absolute;top:6%;left:4%;width:58%;animation:floatSlow 7s ease-in-out infinite;">
+        <div style="background:#FFFFFF;border:1px solid #E5E7EB;border-radius:16px;box-shadow:0 24px 48px -20px rgba(17,24,39,0.18);padding:20px;transform:{{ heroTiltTransform }};transition:transform 0.3s cubic-bezier(.16,1,.3,1);">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+            <div style="width:26px;height:26px;border-radius:7px;background:#2F5FE0;"></div>
+            <div style="font-size:13.5px;font-weight:700;">Tixible Cloud</div>
+            <div style="margin-left:auto;font-size:10px;font-weight:700;color:#059669;background:#ECFDF5;padding:3px 8px;border-radius:100px;">LIVE</div>
+          </div>
+          <div style="height:8px;border-radius:4px;background:#F3F4F6;margin-bottom:8px;"></div>
+          <div style="height:8px;width:70%;border-radius:4px;background:#F3F4F6;"></div>
+        </div>
+      </div>
+      <div style="position:absolute;bottom:10%;right:2%;width:56%;animation:floatSlow 8s ease-in-out infinite 1s;">
+        <div style="background:#FFFFFF;border:1px solid #E5E7EB;border-radius:16px;box-shadow:0 24px 48px -20px rgba(17,24,39,0.18);padding:20px;transform:{{ heroTiltTransform }};transition:transform 0.3s cubic-bezier(.16,1,.3,1);">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+            <div style="width:26px;height:26px;border-radius:7px;background:oklch(62% 0.15 300);"></div>
+            <div style="font-size:13.5px;font-weight:700;">Tixible AI</div>
+            <div style="margin-left:auto;font-size:10px;font-weight:700;color:#6B7280;background:#F3F4F6;padding:3px 8px;border-radius:100px;">SOON</div>
+          </div>
+          <div style="height:8px;border-radius:4px;background:#F3F4F6;margin-bottom:8px;"></div>
+          <div style="height:8px;width:55%;border-radius:4px;background:#F3F4F6;"></div>
+        </div>
+      </div>
+      <div style="position:absolute;top:42%;left:36%;width:44%;animation:floatSlow 9s ease-in-out infinite 0.5s;">
+        <div style="background:#111827;border-radius:16px;box-shadow:0 24px 48px -20px rgba(17,24,39,0.3);padding:18px;transform:{{ heroTiltTransform }};transition:transform 0.3s cubic-bezier(.16,1,.3,1);">
+          <div style="font-size:11px;font-weight:600;color:#9CA3AF;letter-spacing:0.04em;margin-bottom:6px;">ECOSYSTEM</div>
+          <div style="font-size:15px;font-weight:700;color:#FFFFFF;">6 products, one platform</div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- TRUST -->
+  <section style="border-top:1px solid #E5E7EB;border-bottom:1px solid #E5E7EB;background:#F9FAFB;">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(28px,4vw,40px) clamp(20px,4vw,48px);display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:20px;">
+      <sc-for list="{{ trustItems }}" as="t" hint-placeholder-count="6">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:8px;height:8px;background:#2F5FE0;border-radius:2px;flex-shrink:0;"></div>
+          <span style="font-size:14px;font-weight:600;color:#374151;">{{ t }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" data-reveal="1" style="max-width:1280px;margin:0 auto;padding:clamp(64px,9vw,120px) clamp(20px,4vw,48px);display:grid;grid-template-columns:{{ aboutGridCols }};gap:clamp(36px,6vw,72px);align-items:center;opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);">
+    <div>
+      <div style="font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#2F5FE0;margin-bottom:14px;">About Tixible</div>
+      <h2 style="font-size:clamp(28px,3.6vw,42px);line-height:1.14;letter-spacing:-0.02em;font-weight:800;color:#111827;margin:0 0 20px;text-wrap:pretty;">Software today is fragmented. We're building it as one coherent system.</h2>
+      <p style="font-size:16.5px;line-height:1.7;color:#4B5563;margin:0 0 16px;">Most teams stitch together a dozen disconnected tools from a dozen different vendors — each with its own design language, pricing model, and support process. Tixible exists to change that: a single company building a connected family of products, designed with one philosophy and held to one standard of quality.</p>
+      <p style="font-size:16.5px;line-height:1.7;color:#4B5563;margin:0 0 16px;">We started with infrastructure. Tixible Cloud is the foundation the rest of the ecosystem builds on — and it's just the first product in a much longer roadmap.</p>
+      <p style="font-size:16.5px;line-height:1.7;color:#4B5563;margin:0;">The problems we care about aren't unique to one country or one industry: teams everywhere lose time to disconnected tools, inconsistent billing, and support that doesn't understand their whole stack. Solving that requires a company built to operate as one system from the start — not a portfolio of unrelated apps.</p>
+    </div>
+    <div style="position:relative;aspect-ratio:4/3;border-radius:18px;overflow:hidden;border:1px solid #E5E7EB;">
+      <img src="assets/team-photo.jpg" alt="The Tixible team" decoding="async" style="width:100%;height:100%;object-fit:cover;" />
+    </div>
+  </section>
+
+  <!-- CORE VALUES -->
+  <section style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,4vw,48px) clamp(64px,9vw,120px);">
+    <div style="max-width:640px;margin:0 auto 48px;text-align:center;">
+      <div style="font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#2F5FE0;margin-bottom:14px;">Core Values</div>
+      <h2 style="font-size:clamp(26px,3.2vw,36px);line-height:1.16;letter-spacing:-0.02em;font-weight:800;color:#111827;margin:0;text-wrap:pretty;">The standards every product is held to.</h2>
+    </div>
+    <div data-reveal="1" style="opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:#E5E7EB;border:1px solid #E5E7EB;border-radius:16px;overflow:hidden;">
+      <sc-for list="{{ coreValues }}" as="v" hint-placeholder-count="6">
+        <div style="background:#FFFFFF;padding:26px 24px;">
+          <div style="font-size:15.5px;font-weight:700;color:#111827;margin-bottom:8px;">{{ v.title }}</div>
+          <div style="font-size:13.5px;line-height:1.6;color:#6B7280;">{{ v.desc }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ECOSYSTEM -->
+  <section id="ecosystem" style="background:#F9FAFB;border-top:1px solid #E5E7EB;border-bottom:1px solid #E5E7EB;">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(64px,9vw,120px) clamp(20px,4vw,48px);">
+      <div style="max-width:640px;margin:0 auto 56px;text-align:center;">
+        <div style="font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#2F5FE0;margin-bottom:14px;">The Ecosystem</div>
+        <h2 style="font-size:clamp(28px,3.6vw,42px);line-height:1.14;letter-spacing:-0.02em;font-weight:800;color:#111827;margin:0 0 16px;text-wrap:pretty;">One company. A growing family of products.</h2>
+        <p style="font-size:17px;line-height:1.6;color:#4B5563;margin:0;">Tixible Cloud is live today. Every product that follows shares its foundation, its design system, and its standard for security.</p>
+      </div>
+
+      <div style="position:relative;width:min(100%,480px);aspect-ratio:1;margin:0 auto clamp(48px,7vw,72px);">
+        <sc-for list="{{ products }}" as="p" hint-placeholder-count="6">
+          <div style="position:absolute;left:50%;top:50%;width:{{ p.lineLen }}%;height:2px;background:linear-gradient(90deg, rgba(47,95,224,0.3), transparent);transform-origin:left center;transform:rotate({{ p.lineAngle }}deg);opacity:0.5;"></div>
+        </sc-for>
+        <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:96px;height:96px;border-radius:50%;background:#111827;display:flex;align-items:center;justify-content:center;box-shadow:0 20px 40px -12px rgba(17,24,39,0.3);z-index:2;">
+          <span style="font-size:15px;font-weight:800;color:#FFFFFF;letter-spacing:-0.02em;">Tixible</span>
+        </div>
+        <sc-for list="{{ products }}" as="p" hint-placeholder-count="6">
+          <div onMouseEnter="{{ p.onHover }}" style="position:absolute;left:{{ p.orbitLeft }}%;top:{{ p.orbitTop }}%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:8px;background:#FFFFFF;border:1px solid #E5E7EB;border-radius:100px;padding:9px 16px 9px 12px;box-shadow:0 8px 20px -8px rgba(17,24,39,0.15);cursor:pointer;transition:transform 0.25s ease, box-shadow 0.25s ease;z-index:3;" style-hover="{&quot;transform&quot;:&quot;translate(-50%,-50%) scale(1.1)&quot;,&quot;boxShadow&quot;:&quot;0 16px 32px -8px rgba(47,95,224,0.35)&quot;}">
+            <div style="width:9px;height:9px;border-radius:50%;background:{{ p.color }};flex-shrink:0;"></div>
+            <span style="font-size:12.5px;font-weight:700;color:#111827;white-space:nowrap;">{{ p.shortName }}</span>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="max-width:480px;margin:0 auto clamp(40px,6vw,56px);background:#F9FAFB;border:1px solid #E5E7EB;border-radius:14px;padding:20px 24px;text-align:center;transition:all 0.2s ease;">
+        <div style="font-size:15px;font-weight:700;color:#111827;margin-bottom:4px;">{{ hoveredProduct.name }}</div>
+        <div style="font-size:13.5px;color:#6B7280;">{{ hoveredProduct.tagline }}</div>
+      </div>
+
+      <div data-reveal="1" style="opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;">
+        <sc-for list="{{ products }}" as="p" hint-placeholder-count="6">
+          <div style="background:#FFFFFF;border:1px solid #E5E7EB;border-radius:16px;padding:28px;transition:box-shadow 0.2s, transform 0.2s;" style-hover="{&quot;boxShadow&quot;:&quot;0 22px 44px -14px rgba(47,95,224,0.22)&quot;,&quot;transform&quot;:&quot;perspective(700px) rotateX(3deg) translateY(-6px)&quot;}">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+              <div style="width:40px;height:40px;border-radius:10px;background:{{ p.color }};"></div>
+              <div style="font-size:10.5px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:{{ p.statusColor }};background:{{ p.statusBg }};padding:4px 10px;border-radius:100px;">{{ p.status }}</div>
+            </div>
+            <div style="font-size:18px;font-weight:700;color:#111827;margin-bottom:8px;">{{ p.name }}</div>
+            <div style="font-size:14.5px;line-height:1.6;color:#6B7280;">{{ p.tagline }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW THE ECOSYSTEM WORKS -->
+  <section style="max-width:1280px;margin:0 auto;padding:clamp(64px,9vw,120px) clamp(20px,4vw,48px);">
+    <div style="max-width:640px;margin:0 auto 56px;text-align:center;">
+      <div style="font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#2F5FE0;margin-bottom:14px;">How It Works</div>
+      <h2 style="font-size:clamp(28px,3.6vw,42px);line-height:1.14;letter-spacing:-0.02em;font-weight:800;color:#111827;margin:0 0 16px;text-wrap:pretty;">How the ecosystem fits together.</h2>
+      <p style="font-size:17px;line-height:1.6;color:#4B5563;margin:0;">Every Tixible product is built on the same underlying platform — so adopting one product is never the start of a walled garden.</p>
+    </div>
+    <div data-reveal="1" style="opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:clamp(20px,3vw,32px);">
+      <sc-for list="{{ howItWorks }}" as="step" hint-placeholder-count="4">
+        <div style="padding:24px;border:1px solid #E5E7EB;border-radius:16px;background:#FFFFFF;">
+          <div style="font-size:13px;font-weight:800;color:#2F5FE0;margin-bottom:14px;">{{ step.n }}</div>
+          <div style="font-size:16px;font-weight:700;color:#111827;margin-bottom:8px;">{{ step.title }}</div>
+          <div style="font-size:14px;line-height:1.6;color:#6B7280;">{{ step.desc }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- FEATURED PRODUCT: CLOUD -->
+  <section id="cloud" style="max-width:1280px;margin:0 auto;padding:clamp(64px,9vw,120px) clamp(20px,4vw,48px);">
+    <div data-reveal="1" style="opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);background:#111827;border-radius:24px;padding:clamp(32px,6vw,64px);display:grid;grid-template-columns:{{ cloudGridCols }};gap:clamp(32px,5vw,56px);align-items:center;">
+      <div>
+        <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);color:#93C5FD;font-size:13px;font-weight:600;padding:7px 14px;border-radius:100px;margin-bottom:22px;">Flagship product</div>
+        <h2 style="font-size:clamp(26px,3.4vw,36px);line-height:1.16;letter-spacing:-0.02em;font-weight:800;color:#FFFFFF;margin:0 0 18px;text-wrap:pretty;">Tixible Cloud: the foundation the ecosystem is built on.</h2>
+        <p style="font-size:16px;line-height:1.7;color:#9CA3AF;margin:0 0 28px;">A secure, scalable cloud platform for teams and developers to run modern workloads — built to the same standard every future Tixible product will follow.</p>
+        <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:32px;">
+          <sc-for list="{{ cloudCapabilities }}" as="c" hint-placeholder-count="4">
+            <div style="display:flex;align-items:flex-start;gap:12px;">
+              <div style="width:7px;height:7px;border-radius:2px;background:#60A5FA;margin-top:7px;flex-shrink:0;"></div>
+              <span style="font-size:15px;line-height:1.5;color:#E5E7EB;">{{ c }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <a href="#contact" style="display:inline-block;font-size:15px;font-weight:600;color:#111827;background:#FFFFFF;padding:13px 24px;border-radius:9px;" style-hover="{&quot;background&quot;:&quot;#E5E7EB&quot;,&quot;transform&quot;:&quot;translateY(-1px)&quot;}" style-active="{&quot;transform&quot;:&quot;scale(0.97)&quot;}">Explore Tixible Cloud</a>
+      </div>
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:24px;">
+        <div style="font-size:11px;font-weight:600;color:#6B7280;letter-spacing:0.05em;margin-bottom:16px;">WHO IT'S FOR</div>
+        <sc-for list="{{ cloudAudiences }}" as="a" hint-placeholder-count="3">
+          <div style="padding:16px 0;border-top:1px solid rgba(255,255,255,0.08);">
+            <div style="font-size:15px;font-weight:700;color:#FFFFFF;margin-bottom:5px;">{{ a.title }}</div>
+            <div style="font-size:13.5px;line-height:1.5;color:#9CA3AF;">{{ a.desc }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section id="why" style="max-width:1280px;margin:0 auto;padding:clamp(64px,9vw,120px) clamp(20px,4vw,48px);">
+    <div style="max-width:640px;margin:0 auto 56px;text-align:center;">
+      <div style="font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#2F5FE0;margin-bottom:14px;">Why Tixible</div>
+      <h2 style="font-size:clamp(28px,3.6vw,42px);line-height:1.14;letter-spacing:-0.02em;font-weight:800;color:#111827;margin:0;text-wrap:pretty;">Built differently, on purpose.</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:clamp(24px,4vw,40px);">
+      <sc-for list="{{ whyItems }}" as="w" hint-placeholder-count="6">
+        <div>
+          <div style="width:44px;height:44px;border-radius:11px;background:#EEF2FF;display:flex;align-items:center;justify-content:center;margin-bottom:18px;">
+            <div style="width:14px;height:14px;background:#2F5FE0;border-radius:{{ w.shape }};"></div>
+          </div>
+          <div style="font-size:17px;font-weight:700;color:#111827;margin-bottom:8px;">{{ w.title }}</div>
+          <div style="font-size:14.5px;line-height:1.6;color:#6B7280;">{{ w.desc }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- BUILT FOR -->
+  <section style="background:#F9FAFB;border-top:1px solid #E5E7EB;border-bottom:1px solid #E5E7EB;">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(64px,9vw,120px) clamp(20px,4vw,48px);">
+      <div style="max-width:640px;margin:0 auto 56px;text-align:center;">
+        <div style="font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#2F5FE0;margin-bottom:14px;">Built For</div>
+        <h2 style="font-size:clamp(28px,3.6vw,42px);line-height:1.14;letter-spacing:-0.02em;font-weight:800;color:#111827;margin:0;text-wrap:pretty;">Built for whoever is building something.</h2>
+      </div>
+      <div data-reveal="1" style="opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;">
+        <sc-for list="{{ builtFor }}" as="b" hint-placeholder-count="5">
+          <div style="background:#FFFFFF;border:1px solid #E5E7EB;border-radius:16px;padding:26px;">
+            <div style="font-size:16px;font-weight:700;color:#111827;margin-bottom:8px;">{{ b.title }}</div>
+            <div style="font-size:14px;line-height:1.6;color:#6B7280;">{{ b.desc }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECURITY & PRIVACY -->
+  <section id="security" style="max-width:1280px;margin:0 auto;padding:clamp(64px,9vw,120px) clamp(20px,4vw,48px);">
+    <div style="display:grid;grid-template-columns:{{ securityGridCols }};gap:clamp(32px,5vw,64px);align-items:start;">
+      <div>
+        <div style="font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#2F5FE0;margin-bottom:14px;">Security &amp; Privacy</div>
+        <h2 style="font-size:clamp(26px,3.4vw,36px);line-height:1.18;letter-spacing:-0.02em;font-weight:800;color:#111827;margin:0 0 18px;text-wrap:pretty;">Security is a foundation, not a feature.</h2>
+        <p style="font-size:16px;line-height:1.7;color:#4B5563;margin:0;">Every product in the ecosystem is built on the same set of security and privacy principles from day one — so trust doesn't have to be re-earned product by product.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1px;background:#E5E7EB;border:1px solid #E5E7EB;border-radius:16px;overflow:hidden;">
+        <sc-for list="{{ securityPrinciples }}" as="s" hint-placeholder-count="5">
+          <div style="background:#FFFFFF;padding:20px 24px;display:flex;gap:16px;align-items:flex-start;">
+            <div style="width:7px;height:7px;border-radius:50%;background:#2F5FE0;margin-top:8px;flex-shrink:0;"></div>
+            <div>
+              <div style="font-size:15px;font-weight:700;color:#111827;margin-bottom:4px;">{{ s.title }}</div>
+              <div style="font-size:13.5px;line-height:1.6;color:#6B7280;">{{ s.desc }}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEVELOPER EXPERIENCE -->
+  <section style="background:#111827;">
+    <div data-reveal="1" style="opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);max-width:1280px;margin:0 auto;padding:clamp(64px,9vw,120px) clamp(20px,4vw,48px);display:grid;grid-template-columns:{{ devGridCols }};gap:clamp(32px,5vw,56px);align-items:center;">
+      <div>
+        <div style="font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#93C5FD;margin-bottom:14px;">Developer Experience</div>
+        <h2 style="font-size:clamp(26px,3.4vw,36px);line-height:1.18;letter-spacing:-0.02em;font-weight:800;color:#FFFFFF;margin:0 0 18px;text-wrap:pretty;">Built by developers, for developers.</h2>
+        <p style="font-size:16px;line-height:1.7;color:#9CA3AF;margin:0 0 28px;">Every Tixible product ships with the same developer conventions — so learning one means you already understand the next.</p>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <sc-for list="{{ devExperience }}" as="d" hint-placeholder-count="5">
+            <div style="display:flex;align-items:flex-start;gap:12px;">
+              <div style="width:7px;height:7px;border-radius:2px;background:#60A5FA;margin-top:7px;flex-shrink:0;"></div>
+              <span style="font-size:15px;line-height:1.5;color:#E5E7EB;">{{ d }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="background:#0B1220;border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:22px;font-family:monospace;font-size:13px;line-height:1.9;color:#93C5FD;">
+        <div style="color:#6B7280;">$ tixible auth login</div>
+        <div style="color:#E5E7EB;">✓ authenticated as founder@tixible.com</div>
+        <div style="color:#6B7280;margin-top:10px;">$ tixible cloud deploy</div>
+        <div style="color:#E5E7EB;">✓ deployment live in 4.2s</div>
+        <div style="color:#6B7280;margin-top:10px;">$ tixible status</div>
+        <div style="color:#E5E7EB;">✓ all systems operational</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MISSION / VISION -->
+  <section style="background:#F9FAFB;border-top:1px solid #E5E7EB;border-bottom:1px solid #E5E7EB;">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(64px,9vw,120px) clamp(20px,4vw,48px);">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(28px,4vw,40px);">
+        <sc-for list="{{ missionItems }}" as="m" hint-placeholder-count="3">
+          <div style="background:#FFFFFF;border:1px solid #E5E7EB;border-radius:16px;padding:32px;">
+            <div style="font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#2F5FE0;margin-bottom:16px;">{{ m.label }}</div>
+            <div style="font-size:19px;font-weight:700;line-height:1.4;color:#111827;">{{ m.text }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- STORY / TIMELINE -->
+  <section style="max-width:960px;margin:0 auto;padding:clamp(64px,9vw,120px) clamp(20px,4vw,48px);">
+    <div style="max-width:640px;margin:0 auto 56px;text-align:center;">
+      <div style="font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#2F5FE0;margin-bottom:14px;">Our Story</div>
+      <h2 style="font-size:clamp(28px,3.6vw,42px);line-height:1.14;letter-spacing:-0.02em;font-weight:800;color:#111827;margin:0;text-wrap:pretty;">The road to an ecosystem.</h2>
+    </div>
+    <div data-reveal="1" style="opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);display:flex;flex-direction:column;">
+      <sc-for list="{{ timeline }}" as="item" hint-placeholder-count="5">
+        <div style="display:grid;grid-template-columns:100px 20px 1fr;gap:0;">
+          <div style="font-size:14px;font-weight:700;color:#2F5FE0;padding-top:2px;">{{ item.year }}</div>
+          <div style="display:flex;flex-direction:column;align-items:center;">
+            <div style="width:11px;height:11px;border-radius:50%;background:{{ item.dotColor }};border:2px solid #FFFFFF;box-shadow:0 0 0 2px #E5E7EB;flex-shrink:0;margin-top:2px;"></div>
+            <div style="width:2px;flex:1;background:#E5E7EB;"></div>
+          </div>
+          <div style="padding-bottom:36px;">
+            <div style="font-size:16.5px;font-weight:700;color:#111827;margin-bottom:6px;">{{ item.title }}</div>
+            <div style="font-size:14.5px;line-height:1.6;color:#6B7280;">{{ item.desc }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section style="background:#F9FAFB;border-top:1px solid #E5E7EB;border-bottom:1px solid #E5E7EB;">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(64px,9vw,120px) clamp(20px,4vw,48px);">
+      <div style="max-width:640px;margin:0 auto 56px;text-align:center;">
+        <div style="font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#2F5FE0;margin-bottom:14px;">Leadership</div>
+        <h2 style="font-size:clamp(28px,3.6vw,42px);line-height:1.14;letter-spacing:-0.02em;font-weight:800;color:#111827;margin:0;text-wrap:pretty;">Building the founding team.</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;max-width:900px;margin:0 auto;">
+        <div style="background:#FFFFFF;border:1px solid #E5E7EB;border-radius:16px;padding:28px;text-align:center;">
+          <div style="width:72px;height:72px;border-radius:50%;overflow:hidden;margin:0 auto 18px;">
+            <img src="assets/emmanuel-nwakor.jpg" alt="Emmanuel Chukwunweike Nwakor" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:top center;" />
+          </div>
+          <div style="font-size:16.5px;font-weight:700;color:#111827;margin-bottom:4px;">Emmanuel Chukwunweike Nwakor</div>
+          <div style="font-size:13.5px;font-weight:600;color:#2F5FE0;">Founder &amp; CEO</div>
+        </div>
+        <sc-for list="{{ futureTeamSlots }}" as="slot" hint-placeholder-count="2">
+          <div style="background:#FFFFFF;border:1px dashed #D1D5DB;border-radius:16px;padding:28px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+            <div style="width:72px;height:72px;border-radius:50%;background:#F3F4F6;margin-bottom:18px;"></div>
+            <div style="font-size:15px;font-weight:600;color:#6B7280;">{{ slot }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAREERS -->
+  <section style="max-width:1280px;margin:0 auto;padding:clamp(56px,8vw,96px) clamp(20px,4vw,48px);display:grid;grid-template-columns:{{ careersGridCols }};gap:clamp(24px,4vw,40px);align-items:center;border-bottom:1px solid #E5E7EB;">
+    <div>
+      <div style="font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#2F5FE0;margin-bottom:14px;">Careers</div>
+      <h2 style="font-size:clamp(24px,3vw,32px);line-height:1.2;letter-spacing:-0.02em;font-weight:800;color:#111827;margin:0 0 14px;">We're assembling the team that builds the ecosystem.</h2>
+      <p style="font-size:15.5px;line-height:1.65;color:#4B5563;margin:0;">Tixible is early. There's no long roster of open roles yet — but we're looking for people who want to help define how this company builds, ships, and scales from the ground up.</p>
+    </div>
+    <div style="justify-self:{{ careersJustify }};">
+      <a href="#contact" style="display:inline-block;font-size:15px;font-weight:600;color:#FFFFFF;background:#2F5FE0;padding:14px 26px;border-radius:9px;white-space:nowrap;" style-hover="{&quot;background&quot;:&quot;#2448B8&quot;,&quot;boxShadow&quot;:&quot;0 10px 28px -6px rgba(47,95,224,0.5)&quot;,&quot;transform&quot;:&quot;translateY(-1px)&quot;}" style-active="{&quot;transform&quot;:&quot;scale(0.97)&quot;}">Get in Touch</a>
+    </div>
+  </section>
+
+  <!-- PRESS & INVESTORS -->
+  <section id="press" style="background:#F9FAFB;border-top:1px solid #E5E7EB;border-bottom:1px solid #E5E7EB;">
+    <div data-reveal="1" style="opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);max-width:1280px;margin:0 auto;padding:clamp(56px,8vw,96px) clamp(20px,4vw,48px);display:grid;grid-template-columns:{{ pressGridCols }};gap:clamp(24px,4vw,40px);">
+      <div style="background:#FFFFFF;border:1px solid #E5E7EB;border-radius:16px;padding:32px;">
+        <div style="font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#2F5FE0;margin-bottom:14px;">Press &amp; Media</div>
+        <div style="font-size:19px;font-weight:700;color:#111827;margin-bottom:10px;">Writing about Tixible?</div>
+        <p style="font-size:14.5px;line-height:1.65;color:#6B7280;margin:0 0 20px;">For interviews, brand assets, or fact-checking, reach the founder directly — media requests are handled personally at this stage.</p>
+        <a href="mailto:emmanuelnwakor847@gmail.com" style="font-size:14.5px;font-weight:600;">Contact media relations →</a>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #E5E7EB;border-radius:16px;padding:32px;">
+        <div style="font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#2F5FE0;margin-bottom:14px;">Investors</div>
+        <div style="font-size:19px;font-weight:700;color:#111827;margin-bottom:10px;">Building for the long term.</div>
+        <p style="font-size:14.5px;line-height:1.65;color:#6B7280;margin:0 0 20px;">Tixible is self-funded and early. We're open to conversations with investors who think in decades, not quarters, and who share our approach to durable, ecosystem-scale products.</p>
+        <a href="mailto:emmanuelnwakor847@gmail.com" style="font-size:14.5px;font-weight:600;">Contact investor relations →</a>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #E5E7EB;border-radius:16px;padding:32px;">
+        <div style="font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#2F5FE0;margin-bottom:14px;">Partnerships</div>
+        <div style="font-size:19px;font-weight:700;color:#111827;margin-bottom:10px;">Build alongside Tixible.</div>
+        <p style="font-size:14.5px;line-height:1.65;color:#6B7280;margin:0 0 20px;">Integration partners, resellers, and agencies helping teams adopt the ecosystem are welcome to reach out as the partner program takes shape.</p>
+        <a href="mailto:emmanuelnwakor847@gmail.com" style="font-size:14.5px;font-weight:600;">Discuss a partnership →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" style="max-width:880px;margin:0 auto;padding:clamp(64px,9vw,120px) clamp(20px,4vw,48px);">
+    <div style="max-width:640px;margin:0 auto 48px;text-align:center;">
+      <div style="font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#2F5FE0;margin-bottom:14px;">FAQ</div>
+      <h2 style="font-size:clamp(28px,3.6vw,42px);line-height:1.14;letter-spacing:-0.02em;font-weight:800;color:#111827;margin:0;text-wrap:pretty;">Common questions.</h2>
+    </div>
+    <div data-reveal="1" style="opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);display:flex;flex-direction:column;gap:12px;">
+      <sc-for list="{{ faqs }}" as="faq" hint-placeholder-count="6">
+        <div style="border:1px solid #E5E7EB;border-radius:12px;overflow:hidden;background:#FFFFFF;">
+          <button onClick="{{ faq.toggle }}" style="width:100%;text-align:left;background:none;border:none;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;cursor:pointer;">
+            <span style="font-size:15.5px;font-weight:600;color:#111827;">{{ faq.q }}</span>
+            <span style="font-size:20px;font-weight:400;color:#9CA3AF;flex-shrink:0;">{{ faq.icon }}</span>
+          </button>
+          <sc-if value="{{ faq.open }}">
+            <div style="padding:0 20px 20px;font-size:14.5px;line-height:1.7;color:#6B7280;">{{ faq.a }}</div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" style="max-width:1280px;margin:0 auto;padding:clamp(64px,9vw,120px) clamp(20px,4vw,48px);">
+    <div style="max-width:640px;margin:0 auto 56px;text-align:center;">
+      <div style="font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#2F5FE0;margin-bottom:14px;">Contact</div>
+      <h2 style="font-size:clamp(28px,3.6vw,42px);line-height:1.14;letter-spacing:-0.02em;font-weight:800;color:#111827;margin:0 0 16px;text-wrap:pretty;">Let's talk.</h2>
+      <p style="font-size:17px;line-height:1.6;color:#4B5563;margin:0;">Whether you're exploring Tixible Cloud, evaluating a partnership, or just want to say hello.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:{{ contactGridCols }};gap:clamp(32px,5vw,56px);">
+      <div>
+        <div style="background:#F9FAFB;border:1px solid #E5E7EB;border-radius:16px;padding:28px;margin-bottom:24px;">
+          <div style="font-size:16.5px;font-weight:700;color:#111827;margin-bottom:4px;">Emmanuel Chukwunweike Nwakor</div>
+          <div style="font-size:13.5px;font-weight:600;color:#2F5FE0;margin-bottom:18px;">Founder / CEO, Tixible</div>
+          <div style="display:flex;flex-direction:column;gap:10px;font-size:14.5px;color:#374151;">
+            <div><span style="color:#9CA3AF;">Email · </span><a href="mailto:emmanuelnwakor847@gmail.com">emmanuelnwakor847@gmail.com</a></div>
+            <div><span style="color:#9CA3AF;">WhatsApp · </span><span>0901 740 9317</span></div>
+            <div><span style="color:#9CA3AF;">GitHub · </span><a href="https://github.com/emmanuelnwakor847-beep/tixible" target="_blank" rel="noopener">emmanuelnwakor847-beep/tixible</a></div>
+            <div><span style="color:#9CA3AF;">Website · </span><span>tixible.com</span></div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;">
+          <sc-for list="{{ contactCategories }}" as="c" hint-placeholder-count="6">
+            <div style="border:1px solid #E5E7EB;border-radius:12px;padding:16px;">
+              <div style="font-size:13.5px;font-weight:700;color:#111827;margin-bottom:4px;">{{ c.label }}</div>
+              <a href="mailto:emmanuelnwakor847@gmail.com" style="font-size:12.5px;">{{ c.email }}</a>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="background:#FFFFFF;border:1px solid #E5E7EB;border-radius:16px;padding:32px;">
+        <sc-if value="{{ formSubmitted }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:280px;text-align:center;">
+            <div style="width:48px;height:48px;border-radius:50%;background:#ECFDF5;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+              <div style="width:16px;height:16px;background:#059669;border-radius:2px;"></div>
+            </div>
+            <div style="font-size:17px;font-weight:700;color:#111827;margin-bottom:6px;">Message sent</div>
+            <div style="font-size:14.5px;color:#6B7280;">We'll get back to you shortly.</div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ formNotSubmitted }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+              <div>
+                <label style="display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:6px;">Full name</label>
+                <input value="{{ formName }}" onChange="{{ setFormName }}" placeholder="Jane Doe" style="width:100%;padding:11px 13px;border:1px solid #D1D5DB;border-radius:8px;font-size:14.5px;font-family:inherit;transition:box-shadow 0.2s,border-color 0.2s;" style-focus="{&quot;outline&quot;:&quot;none&quot;,&quot;borderColor&quot;:&quot;#2F5FE0&quot;,&quot;boxShadow&quot;:&quot;0 0 0 3px rgba(47,95,224,0.15)&quot;}" />
+              </div>
+              <div>
+                <label style="display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:6px;">Email</label>
+                <input value="{{ formEmail }}" onChange="{{ setFormEmail }}" placeholder="jane@company.com" style="width:100%;padding:11px 13px;border:1px solid #D1D5DB;border-radius:8px;font-size:14.5px;font-family:inherit;" style-focus="{&quot;outline&quot;:&quot;none&quot;,&quot;borderColor&quot;:&quot;#2F5FE0&quot;}" />
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+              <div>
+                <label style="display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:6px;">Company</label>
+                <input value="{{ formCompany }}" onChange="{{ setFormCompany }}" placeholder="Acme Inc." style="width:100%;padding:11px 13px;border:1px solid #D1D5DB;border-radius:8px;font-size:14.5px;font-family:inherit;" style-focus="{&quot;outline&quot;:&quot;none&quot;,&quot;borderColor&quot;:&quot;#2F5FE0&quot;}" />
+              </div>
+              <div>
+                <label style="display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:6px;">Subject</label>
+                <select value="{{ formSubject }}" onChange="{{ setFormSubject }}" style="width:100%;padding:11px 13px;border:1px solid #D1D5DB;border-radius:8px;font-size:14.5px;font-family:inherit;background:#FFFFFF;">
+                  <option>General</option>
+                  <option>Sales</option>
+                  <option>Enterprise</option>
+                  <option>Partnerships</option>
+                  <option>Support</option>
+                  <option>Media</option>
+                  <option>Careers</option>
+                </select>
+              </div>
+            </div>
+            <div style="margin-bottom:22px;">
+              <label style="display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:6px;">Message</label>
+              <textarea value="{{ formMessage }}" onChange="{{ setFormMessage }}" placeholder="Tell us what you're building..." rows="5" style="width:100%;padding:11px 13px;border:1px solid #D1D5DB;border-radius:8px;font-size:14.5px;font-family:inherit;resize:vertical;" style-focus="{&quot;outline&quot;:&quot;none&quot;,&quot;borderColor&quot;:&quot;#2F5FE0&quot;}"></textarea>
+            </div>
+            <button onClick="{{ submitForm }}" style="width:100%;font-size:15px;font-weight:600;color:#FFFFFF;background:#2F5FE0;padding:13px;border:none;border-radius:9px;cursor:pointer;" style-hover="{&quot;background&quot;:&quot;#2448B8&quot;,&quot;boxShadow&quot;:&quot;0 10px 28px -6px rgba(47,95,224,0.5)&quot;,&quot;transform&quot;:&quot;translateY(-1px)&quot;}" style-active="{&quot;transform&quot;:&quot;scale(0.97)&quot;}">Send Message</button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section style="background:#111827;">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(56px,8vw,96px) clamp(20px,4vw,48px);text-align:center;">
+      <h2 style="font-size:clamp(28px,3.6vw,40px);line-height:1.15;letter-spacing:-0.02em;font-weight:800;color:#FFFFFF;margin:0 0 20px;text-wrap:pretty;">Ready to explore the Tixible ecosystem?</h2>
+      <p style="font-size:16.5px;color:#9CA3AF;margin:0 0 36px;">Start with Tixible Cloud, live now — and see what's coming next.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center;">
+        <a href="#contact" style="font-size:15px;font-weight:600;color:#111827;background:#FFFFFF;padding:14px 26px;border-radius:9px;" style-hover="{&quot;background&quot;:&quot;#E5E7EB&quot;,&quot;transform&quot;:&quot;translateY(-1px)&quot;}" style-active="{&quot;transform&quot;:&quot;scale(0.97)&quot;}">Get Started with Cloud</a>
+        <a href="#contact" style="font-size:15px;font-weight:600;color:#FFFFFF;background:transparent;border:1px solid rgba(255,255,255,0.25);padding:14px 26px;border-radius:9px;">Contact the Team</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background:#FFFFFF;border-top:1px solid #E5E7EB;">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(48px,7vw,80px) clamp(20px,4vw,48px) 32px;display:grid;grid-template-columns:{{ footerGridCols }};gap:clamp(32px,5vw,48px);">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <div style="width:28px;height:28px;border-radius:7px;overflow:hidden;">
+            <img src="tixible-logo-icon.png" alt="Tixible" style="width:100%;height:100%;object-fit:cover;transform:scale(1.2);" />
+          </div>
+          <span style="font-size:16.5px;font-weight:800;color:#111827;">Tixible</span>
+        </div>
+        <p style="font-size:14px;line-height:1.6;color:#6B7280;max-width:260px;margin:0 0 16px;">The technology company building a connected ecosystem of products for modern digital work.</p>
+        <div style="display:flex;gap:12px;">
+          <a href="https://github.com/emmanuelnwakor847-beep/tixible" target="_blank" rel="noopener" style="font-size:13px;color:#6B7280;">GitHub</a>
+        </div>
+      </div>
+      <sc-for list="{{ footerColumns }}" as="col" hint-placeholder-count="4">
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#111827;margin-bottom:16px;">{{ col.title }}</div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <sc-for list="{{ col.links }}" as="link" hint-placeholder-count="4">
+              <a href="{{ link.href }}" style="font-size:14px;color:#6B7280;">{{ link.label }}</a>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="max-width:1280px;margin:0 auto;padding:24px clamp(20px,4vw,48px);border-top:1px solid #E5E7EB;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;">
+      <span style="font-size:13px;color:#9CA3AF;">© 2026 Tixible. All rights reserved.</span>
+      <div style="display:flex;gap:18px;">
+        <a href="https://github.com/emmanuelnwakor847-beep/tixible" target="_blank" rel="noopener" style="font-size:13px;color:#6B7280;">GitHub</a>
+        <a href="mailto:emmanuelnwakor847@gmail.com" style="font-size:13px;color:#6B7280;">Email</a>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;forceMobile&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: false, &quot;tsType&quot;: &quot;boolean&quot;}}">
+class Component extends DCLogic {
+  state = {
+    isMobile: false,
+    mobileMenuOpen: false,
+    productsOpen: false,
+    formName: '', formEmail: '', formCompany: '', formSubject: 'General', formMessage: '',
+    formSubmitted: false,
+    openFaq: null,
+    heroTiltX: 0, heroTiltY: 0,
+    hoveredProductIdx: 0,
+  };
+
+  componentDidMount() {
+    this.checkWidth();
+    this._onResize = () => this.checkWidth();
+    window.addEventListener('resize', this._onResize);
+    this._observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+          this._observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('[data-reveal]').forEach(el => this._observer.observe(el));
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this._onResize);
+    if (this._observer) this._observer.disconnect();
+  }
+  checkWidth() {
+    if (this.props.forceMobile) return;
+    const isMobile = window.innerWidth < 1080;
+    if (isMobile !== this.state.isMobile) this.setState({ isMobile });
+  }
+
+  renderVals() {
+    const isMobile = this.props.forceMobile ? true : this.state.isMobile;
+
+    const productsBase = [
+      { name: 'Tixible Cloud', shortName: 'Cloud', tagline: 'Secure, scalable cloud infrastructure.', status: 'LIVE', statusColor: '#059669', statusBg: '#ECFDF5', color: 'oklch(62% 0.18 250)' },
+      { name: 'Tixible AI', shortName: 'AI', tagline: 'Intelligent tooling built into the ecosystem.', status: 'SOON', statusColor: '#6B7280', statusBg: '#F3F4F6', color: 'oklch(62% 0.18 300)' },
+      { name: 'Tixible Drive', shortName: 'Drive', tagline: 'Storage and file collaboration.', status: 'PLANNED', statusColor: '#6B7280', statusBg: '#F3F4F6', color: 'oklch(62% 0.18 230)' },
+      { name: 'Tixible Inventory', shortName: 'Inventory', tagline: 'Inventory and operations management.', status: 'PLANNED', statusColor: '#6B7280', statusBg: '#F3F4F6', color: 'oklch(62% 0.18 200)' },
+      { name: 'Tixible PM', shortName: 'PM', tagline: 'Project management for modern teams.', status: 'PLANNED', statusColor: '#6B7280', statusBg: '#F3F4F6', color: 'oklch(62% 0.18 325)' },
+      { name: 'Tixible Connect', shortName: 'Connect', tagline: 'Connectivity across the ecosystem.', status: 'PLANNED', statusColor: '#6B7280', statusBg: '#F3F4F6', color: 'oklch(62% 0.18 170)' },
+    ];
+    const radius = 40;
+    const products = productsBase.map((p, i) => {
+      const angleDeg = i * 60 - 90;
+      const rad = angleDeg * Math.PI / 180;
+      return {
+        ...p,
+        lineAngle: angleDeg,
+        lineLen: radius,
+        orbitLeft: 50 + radius * Math.cos(rad),
+        orbitTop: 50 + radius * Math.sin(rad),
+        onHover: () => this.setState({ hoveredProductIdx: i }),
+      };
+    });
+    const hoveredProduct = products[this.state.hoveredProductIdx] || products[0];
+
+    const trustItems = ['Built for modern teams', 'Developer-friendly', 'Enterprise-ready', 'Secure by design', 'Future-focused', 'Scalable architecture'];
+
+    const whyItems = [
+      { title: 'A unified ecosystem', desc: 'Every product shares one design system and one account, not six.', shape: '3px' },
+      { title: 'Premium design philosophy', desc: 'Every screen, in every product, held to the same bar.', shape: '50%' },
+      { title: 'Developer-first', desc: 'Built by people who ship software, for people who ship software.', shape: '3px' },
+      { title: 'Security-minded architecture', desc: 'Security is a foundation, not a feature added later.', shape: '50%' },
+      { title: 'Long-term product thinking', desc: 'We build for the next decade, not the next launch.', shape: '3px' },
+      { title: 'Scalable company structure', desc: 'Designed from day one to grow into a multi-product company.', shape: '50%' },
+    ];
+
+    const missionItems = [
+      { label: 'Mission', text: 'Build software that businesses, developers, and teams can depend on for the long term.' },
+      { label: 'Vision', text: 'Become the platform behind a new generation of connected digital tools.' },
+      { label: 'Principles', text: 'Premium quality, developer trust, and durable architecture over speed for its own sake.' },
+    ];
+
+    const timeline = [
+      { year: '2025', title: 'Tixible founded', desc: 'Tixible is founded to build a connected ecosystem of software products.', dotColor: '#2F5FE0' },
+      { year: '2026', title: 'Tixible Cloud built', desc: 'Development begins on Tixible Cloud, the ecosystem\'s foundation.', dotColor: '#2F5FE0' },
+      { year: 'Aug 2026', title: 'Tixible Cloud launches', desc: 'Tixible Cloud goes live as the flagship product in the ecosystem.', dotColor: '#2F5FE0' },
+      { year: 'Next', title: 'Ecosystem expansion', desc: 'Tixible AI, Drive, Inventory, PM, and Connect enter development.', dotColor: '#D1D5DB' },
+      { year: 'Future', title: 'A complete platform', desc: 'A fully connected suite of Tixible products for modern digital work.', dotColor: '#D1D5DB' },
+    ];
+
+    const futureTeamSlots = ['Founding Engineer — open', 'Founding Designer — open'];
+
+    const contactCategories = [
+      { label: 'Sales', email: 'Contact us' },
+      { label: 'Enterprise', email: 'Contact us' },
+      { label: 'Partnerships', email: 'Contact us' },
+      { label: 'Support', email: 'Contact us' },
+      { label: 'Media', email: 'Contact us' },
+      { label: 'Careers', email: 'Contact us' },
+    ];
+
+    const cloudCapabilities = [
+      'Elastic, secure infrastructure built for production workloads',
+      'Simple deployment for developers and technical teams',
+      'Enterprise-grade access controls and monitoring',
+      'Foundation shared by every future Tixible product',
+    ];
+    const cloudAudiences = [
+      { title: 'Developers', desc: 'Ship and scale applications without managing raw infrastructure.' },
+      { title: 'Businesses', desc: 'Run critical workloads on infrastructure built for reliability.' },
+      { title: 'Teams', desc: 'One platform, shared across every project your team runs.' },
+    ];
+
+    const footerColumns = [
+      { title: 'Product', links: [{label:'Tixible Cloud', href:'#cloud'},{label:'Ecosystem', href:'#ecosystem'},{label:'Pricing', href:'pricing.html'},{label:'Status', href:'status.html'}] },
+      { title: 'Company', links: [{label:'About', href:'#about'},{label:'Why Tixible', href:'#why'},{label:'Blog', href:'blog.html'},{label:'Careers', href:'#contact'},{label:'Press', href:'#press'},{label:'FAQ', href:'#faq'}] },
+      { title: 'Developers', links: [{label:'Docs', href:'#contact'},{label:'API Reference', href:'#contact'},{label:'GitHub', href:'https://github.com/emmanuelnwakor847-beep/tixible'},{label:'Security', href:'security.html'}] },
+      { title: 'Legal', links: [{label:'Privacy Policy', href:'#'},{label:'Terms of Service', href:'#'},{label:'Security', href:'security.html'}] },
+    ];
+
+    const coreValues = [
+      { title: 'Clarity', desc: 'Say what a product does in plain language. No jargon standing in for substance.' },
+      { title: 'Craft', desc: 'Every detail — spacing, copy, response time — is a reflection of the company.' },
+      { title: 'Reliability', desc: 'Infrastructure and products people can build their business on without worrying.' },
+      { title: 'Ownership', desc: 'Small team, direct accountability. No decision gets lost in a committee.' },
+      { title: 'Long-term thinking', desc: 'Decisions are made for the ecosystem we\'re building over ten years, not ten weeks.' },
+      { title: 'Openness', desc: 'Clear roadmaps, honest status pages, and no overstated claims.' },
+    ];
+
+    const howItWorks = [
+      { n: '01', title: 'One account', desc: 'Sign in once and every Tixible product you use is already connected to it.' },
+      { n: '02', title: 'One design system', desc: 'Every product shares the same interface patterns, so switching costs nothing to learn.' },
+      { n: '03', title: 'Shared infrastructure', desc: 'New products build on Tixible Cloud instead of reinventing infrastructure from scratch.' },
+      { n: '04', title: 'One relationship', desc: 'One company to talk to for billing, support, and security — across every product you adopt.' },
+    ];
+
+    const builtFor = [
+      { title: 'Startups', desc: 'Start on infrastructure that can scale with you, without early over-investment.' },
+      { title: 'Enterprises', desc: 'Centralized security, access control, and a single vendor relationship across products.' },
+      { title: 'Developers', desc: 'Consistent APIs and tooling across every product in the ecosystem.' },
+      { title: 'Creators', desc: 'Reliable infrastructure for the tools you build and ship to your audience.' },
+      { title: 'Students & learners', desc: 'Approachable, well-documented tools for learning modern software practices.' },
+    ];
+
+    const securityPrinciples = [
+      { title: 'Encryption in transit and at rest', desc: 'Data is encrypted by default across every product in the ecosystem.' },
+      { title: 'Least-privilege access', desc: 'Access controls are scoped tightly by default, not opened broadly for convenience.' },
+      { title: 'Data ownership', desc: 'Your data belongs to you. Exporting and deleting it is never an obstacle course.' },
+      { title: 'Transparent status', desc: 'Uptime and incidents are reported honestly on the ecosystem status page.' },
+      { title: 'No dark patterns', desc: 'No consent manipulation, hidden opt-outs, or manufactured urgency — in security settings or anywhere else.' },
+    ];
+
+    const devExperience = [
+      'A consistent API design across every Tixible product',
+      'Clear, versioned documentation for every endpoint',
+      'A single CLI and SDK convention shared ecosystem-wide',
+      'Sandbox environments for testing before production',
+      'Status and incident history visible without asking support',
+    ];
+
+    const faqToggle = (i) => this.setState(s => ({ openFaq: s.openFaq === i ? null : i }));
+    const faqData = [
+      { q: 'What exactly is Tixible?', a: 'Tixible is a technology company building a connected ecosystem of software products, starting with Tixible Cloud. It is the parent brand — not a single app.' },
+      { q: 'Is Tixible Cloud production-ready?', a: 'Tixible Cloud launches August 1, 2026, built to the same reliability and security standard the rest of the ecosystem will follow.' },
+      { q: 'Can I use just one Tixible product?', a: 'Yes. Every product works fully on its own. The ecosystem benefits — shared account, shared design, shared support — apply automatically if you adopt more than one.' },
+      { q: 'How does pricing work across products?', a: 'Each product is priced on its own merits. As the ecosystem grows, we plan to introduce bundled plans for teams using multiple Tixible products together.' },
+      { q: 'Is my data secure with Tixible?', a: 'Every product follows the same security principles: encryption by default, least-privilege access, and full data ownership and export at any time.' },
+      { q: 'How do I partner with or invest in Tixible?', a: 'Reach out directly through the Contact section — partnership and investor conversations are handled personally by the founder at this stage.' },
+    ];
+
+    return {
+      desktopNavDisplay: isMobile ? 'none' : 'flex',
+      mobileNavDisplay: isMobile ? 'flex' : 'none',
+      heroGridCols: isMobile ? '1fr' : '1.1fr 0.9fr',
+      aboutGridCols: isMobile ? '1fr' : '1fr 1fr',
+      cloudGridCols: isMobile ? '1fr' : '1.1fr 0.9fr',
+      contactGridCols: isMobile ? '1fr' : '1fr 1fr',
+      footerGridCols: isMobile ? '1fr' : '1.4fr repeat(4, 1fr)',
+      careersGridCols: isMobile ? '1fr' : '1fr auto',
+      careersJustify: isMobile ? 'start' : 'end',
+      securityGridCols: isMobile ? '1fr' : '0.9fr 1.1fr',
+      devGridCols: isMobile ? '1fr' : '1fr 1fr',
+      pressGridCols: isMobile ? '1fr' : 'repeat(3, 1fr)',
+
+      mobileMenuOpen: this.state.mobileMenuOpen,
+      toggleMobileMenu: () => this.setState(s => ({ mobileMenuOpen: !s.mobileMenuOpen })),
+      productsOpen: this.state.productsOpen,
+      openProducts: () => this.setState({ productsOpen: true }),
+      closeProducts: () => this.setState({ productsOpen: false }),
+
+      products, hoveredProduct, trustItems, whyItems, missionItems, timeline, futureTeamSlots,
+      onHeroMove: (e) => {
+        if (this._tiltRAF) return;
+        const clientX = e.clientX, clientY = e.clientY, rect = e.currentTarget.getBoundingClientRect();
+        this._tiltRAF = requestAnimationFrame(() => {
+          this._tiltRAF = null;
+          const px = (clientX - rect.left) / rect.width - 0.5;
+          const py = (clientY - rect.top) / rect.height - 0.5;
+          const x = py * -6, y = px * 8;
+          if (Math.abs(x - this.state.heroTiltX) > 0.15 || Math.abs(y - this.state.heroTiltY) > 0.15) {
+            this.setState({ heroTiltX: x, heroTiltY: y });
+          }
+        });
+      },
+      onHeroLeave: () => this.setState({ heroTiltX: 0, heroTiltY: 0 }),
+      heroTiltTransform: `perspective(900px) rotateX(${this.state.heroTiltX}deg) rotateY(${this.state.heroTiltY}deg)`,
+      showHeroFX: !this.props.forceMobile,
+      contactCategories, cloudCapabilities, cloudAudiences, footerColumns,
+      coreValues, howItWorks, builtFor, securityPrinciples, devExperience,
+      faqs: faqData.map((f, i) => ({ ...f, open: this.state.openFaq === i, icon: this.state.openFaq === i ? '−' : '+', toggle: () => faqToggle(i) })),
+
+      formName: this.state.formName,
+      formEmail: this.state.formEmail,
+      formCompany: this.state.formCompany,
+      formSubject: this.state.formSubject,
+      formMessage: this.state.formMessage,
+      setFormName: e => this.setState({ formName: e.target.value }),
+      setFormEmail: e => this.setState({ formEmail: e.target.value }),
+      setFormCompany: e => this.setState({ formCompany: e.target.value }),
+      setFormSubject: e => this.setState({ formSubject: e.target.value }),
+      setFormMessage: e => this.setState({ formMessage: e.target.value }),
+      formSubmitted: this.state.formSubmitted,
+      formNotSubmitted: !this.state.formSubmitted,
+      submitForm: () => this.setState({ formSubmitted: true }),
+    };
+  }
+}
+
+</script>
+</body>
+</html>
