@@ -1,0 +1,25 @@
+{
+  "name": "tixible-website",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Emmanuel Chukwunweike Nwakor",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.2.1",
+    "astro": "^7.1.4"
+  },
+  "devDependencies": {
+    "eslint": "^10.8.0",
+    "html-validate": "^11.0.0",
+    "stylelint": "^17.14.1",
+    "stylelint-config-standard": "^40.0.0",
+    "vercel": "^58.0.0"
+  }
+}

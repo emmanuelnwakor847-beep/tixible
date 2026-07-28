@@ -1,0 +1,82 @@
+---
+import { getCollection } from 'astro:content';
+
+const allProducts = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
+---
+<header class="nav" id="siteNav">
+  <div class="nav-inner">
+    <div class="nav-left">
+      <a href="/" class="brand" aria-label="Tixible home">
+        <img src="/assets/brand/tixible/icon.webp" width="32" height="32" alt="Tixible logo">
+        <span class="brand-word">Tixible</span>
+      </a>
+      <nav aria-label="Primary">
+        <ul class="nav-links" id="navLinks">
+          <li>
+            <button type="button" class="nav-link" aria-expanded="false" aria-controls="megaProducts" id="productsTrigger">
+              Products <svg width="14" height="14"><use href="#i-chevron-down"/></svg>
+            </button>
+            <div class="mega" id="megaProducts">
+              <div class="mega-grid">
+                {allProducts.map((product) => (
+                  <a class="mega-item" href={`/products/${product.id}`}>
+                    <span class="mega-icon" style={!product.data.icon ? `background:linear-gradient(135deg,${product.data.accentFrom},${product.data.accentTo});` : undefined}>
+                      {product.data.icon ? <img src={product.data.icon} alt="" loading="lazy" decoding="async" /> : product.data.iconInitials}
+                    </span>
+                    <div class="mega-text">
+                      <h4>{product.data.name} {product.data.flagship && <span class="badge badge-flagship" style="margin-left:2px;padding:1px 7px;">Flagship</span>}</h4>
+                      <p>{product.data.summary}</p>
+                    </div>
+                  </a>
+                ))}
+              </div>
+              <div class="mega-foot">
+                <span style="font-size:13px;color:var(--color-text-tertiary);">One account. One ecosystem.</span>
+                <a href="/products">View all products <svg width="14" height="14"><use href="#i-arrow-right"/></svg></a>
+              </div>
+            </div>
+          </li>
+          <li><a class="nav-link" href="/#why-tixible">Solutions</a></li>
+          <li><a class="nav-link" href="/products/tixible-cloud">Developers</a></li>
+          <li><a class="nav-link" href="/#about">Company</a></li>
+          <li><a class="nav-link" href="/#contact">Pricing</a></li>
+          <li><a class="nav-link" href="/blog">Blog</a></li>
+          <li><a class="nav-link" href="/#system-status">Status</a></li>
+          <li><a class="nav-link" href="/#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="nav-right">
+      <a href="/#contact" class="nav-signin">Sign In</a>
+      <a href="/#contact" class="btn btn-primary btn-sm">Get Started</a>
+      <button type="button" class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+        <svg width="22" height="22"><use href="#i-menu" id="menuIcon"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li>
+      <a class="nav-link" href="#" id="mobileProductsTrigger" aria-expanded="false">Products <svg width="16" height="16"><use href="#i-chevron-down"/></svg></a>
+      <div class="mobile-sub" id="mobileProductsSub">
+        {allProducts.map((product) => (
+          <a href={`/products/${product.id}`}>{product.data.name}{product.data.flagship ? ' — Flagship' : ''}</a>
+        ))}
+      </div>
+    </li>
+    <li><a class="nav-link" href="/#why-tixible">Solutions</a></li>
+    <li><a class="nav-link" href="/products/tixible-cloud">Developers</a></li>
+    <li><a class="nav-link" href="/#about">Company</a></li>
+    <li><a class="nav-link" href="/#contact">Pricing</a></li>
+    <li><a class="nav-link" href="/blog">Blog</a></li>
+    <li><a class="nav-link" href="/#system-status">Status</a></li>
+    <li><a class="nav-link" href="/#contact">Contact</a></li>
+    <li><a class="nav-link" href="/#contact">Sign In</a></li>
+  </ul>
+  <div class="mobile-cta">
+    <a href="/#contact" class="btn btn-primary btn-block">Get Started</a>
+    <a href="/products" class="btn btn-secondary btn-block">Explore Products</a>
+  </div>
+</div>

@@ -1,0 +1,69 @@
+---
+import { getCollection } from 'astro:content';
+import NewsletterSignup from './NewsletterSignup.astro';
+
+const allProducts = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
+---
+<footer class="footer" id="system-status">
+  <div class="container">
+    <div class="footer-newsletter">
+      <NewsletterSignup compact />
+    </div>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="/" class="brand" aria-label="Tixible home">
+          <img src="/assets/brand/tixible/icon.webp" width="32" height="32" alt="Tixible logo" loading="lazy" decoding="async">
+          <span class="brand-word">Tixible</span>
+        </a>
+        <p>A technology company building a growing ecosystem of products for developers, businesses, and teams who think long-term.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="GitHub"><svg width="16" height="16"><use href="#i-github"/></svg></a>
+          <a href="#" aria-label="LinkedIn"><svg width="16" height="16"><use href="#i-linkedin"/></svg></a>
+          <a href="#" aria-label="X / Twitter"><svg width="16" height="16"><use href="#i-x-social"/></svg></a>
+          <a href="#" aria-label="Instagram"><svg width="16" height="16"><use href="#i-instagram"/></svg></a>
+          <a href="#" aria-label="YouTube"><svg width="16" height="16"><use href="#i-youtube"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Products</h4>
+        <ul>
+          {allProducts.map((product) => (
+            <li><a href={`/products/${product.id}`}>{product.data.name}</a></li>
+          ))}
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="/#about">About</a></li>
+          <li><a href="/#story">Company story</a></li>
+          <li><a href="/#founder">Founder</a></li>
+          <li><a href="/#careers">Careers</a></li>
+          <li><a href="/#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Developers</h4>
+        <ul>
+          <li><a href="/products/tixible-cloud">Documentation</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/#system-status">System status</a></li>
+          <li><a href="#" aria-label="Tixible on GitHub">GitHub</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy policy</a></li>
+          <li><a href="#">Terms of service</a></li>
+          <li><a href="#">Security</a></li>
+          <li><a href="#">Cookie preferences</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Tixible. All rights reserved. Founded by Emmanuel Chukwunweike Nwakor.</span>
+      <div class="footer-status"><span class="pulse"></span> All systems operational</div>
+    </div>
+  </div>
+</footer>

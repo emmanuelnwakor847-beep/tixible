@@ -1,0 +1,20 @@
+# build output
+dist/
+.astro/
+.vercel/
+
+# dependencies
+node_modules/
+
+# environment variables
+.env
+.env.production
+
+# logs
+npm-debug.log*
+
+# editor/OS
+.DS_Store
+
+# local tooling config
+.claude/

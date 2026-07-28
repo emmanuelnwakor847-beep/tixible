@@ -1,0 +1,136 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const products = await getCollection('products');
+  return products.map((product) => ({
+    params: { slug: product.id },
+    props: { product },
+  }));
+}
+
+const { product } = Astro.props;
+const { Content } = await render(product);
+
+const allProducts = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
+const others = allProducts.filter((p) => p.id !== product.id).slice(0, 3);
+
+const statusBadge: Record<string, string> = {
+  'flagship-live': 'badge-live',
+  'in-development': 'badge-soon',
+  planned: 'badge-planned',
+};
+
+const softwareAppSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: product.data.name,
+  description: product.data.summary,
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'Web',
+  publisher: {
+    '@type': 'Organization',
+    name: 'Tixible',
+  },
+};
+---
+<BaseLayout
+  title={`${product.data.name} — Tixible`}
+  description={product.data.summary}
+  structuredData={softwareAppSchema}
+>
+
+<section class="product-hero">
+  <div class="container product-hero-inner">
+    <a href="/products" class="back-link"><svg width="14" height="14"><use href="#i-arrow-left"/></svg> All products</a>
+    <div class="product-hero-top">
+      {product.data.icon ? (
+        <img class="product-hero-icon" src={product.data.icon} alt="" />
+      ) : (
+        <span class="product-hero-icon-mono" style={`background:linear-gradient(135deg,${product.data.accentFrom},${product.data.accentTo});`}>{product.data.iconInitials}</span>
+      )}
+      <span class={`badge ${statusBadge[product.data.status]}`}>{product.data.statusLabel}</span>
+    </div>
+    <h1>{product.data.name}</h1>
+    <p class="tagline">{product.data.tagline}</p>
+  </div>
+</section>
+
+<section class="section-pad">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Who it's for</div>
+      <h2 style="font-size:var(--text-3xl);">Built for the people who'll actually use it</h2>
+    </div>
+    <div class="product-audience">
+      {product.data.audience.map((a) => (
+        <div class="product-audience-card card">
+          <h3>{a.title}</h3>
+          <p>{a.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="section-pad" style="background:var(--color-bg-subtle);">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Capabilities</div>
+      <h2 style="font-size:var(--text-3xl);">What {product.data.name} does</h2>
+    </div>
+    <div class="product-features">
+      {product.data.features.map((f) => (
+        <div class="product-feature-card card">
+          <h3>{f.title}</h3>
+          <p>{f.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="section-pad">
+  <div class="container">
+    <div class="product-body">
+      <Content />
+    </div>
+  </div>
+</section>
+
+<section class="section-pad" style="background:var(--color-bg-subtle);">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Rest of the ecosystem</div>
+      <h2 style="font-size:var(--text-3xl);">More from Tixible</h2>
+    </div>
+    <div class="product-other">
+      {others.map((p) => (
+        <a href={`/products/${p.id}`} class="eco-card card card-hover">
+          <div class="eco-top">
+            {p.data.icon ? <img class="eco-icon" src={p.data.icon} alt="" loading="lazy" decoding="async" /> : <span class="eco-icon-mono">{p.data.iconInitials}</span>}
+            <span class={`badge ${statusBadge[p.data.status]}`}>{p.data.statusLabel}</span>
+          </div>
+          <h3>{p.data.name}</h3>
+          <p>{p.data.summary}</p>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="section-pad">
+  <div class="container">
+    <div class="final-cta" data-reveal>
+      <h2>Ready to get started with {product.data.name}?</h2>
+      <p>Reach out and we'll help you figure out if it's the right fit today.</p>
+      <div class="final-cta-buttons">
+        <a href="/#contact" class="btn btn-primary btn-lg">Contact us</a>
+        <a href="/products" class="btn btn-ghost btn-lg">Browse all products</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</BaseLayout>

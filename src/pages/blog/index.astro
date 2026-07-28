@@ -1,0 +1,49 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import NewsletterSignup from '../../components/NewsletterSignup.astro';
+
+const posts = (await getCollection('blog'))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+<BaseLayout
+  title="Blog — Tixible"
+  description="Product updates and thinking behind the Tixible ecosystem, written by its founder as it happens."
+>
+
+<section class="blog-hero">
+  <div class="container">
+    <div class="eyebrow">Blog</div>
+    <h1>Notes from Tixible</h1>
+    <p>Product updates, decisions, and the thinking behind the Tixible ecosystem — written as it happens, not polished after the fact.</p>
+  </div>
+</section>
+
+<section class="section-pad">
+  <div class="container">
+    {posts.length === 0 ? (
+      <p>No posts yet — check back soon.</p>
+    ) : (
+      <div class="blog-grid">
+        {posts.map((post) => (
+          <a href={`/blog/${post.id}`} class="blog-card card card-hover" data-reveal>
+            <div class="blog-card-meta">
+              <svg width="14" height="14"><use href="#i-calendar"/></svg>
+              {post.data.pubDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+            </div>
+            <h2>{post.data.title}</h2>
+            <p>{post.data.description}</p>
+            <div class="tags">{post.data.tags.map((t) => <span class="tag-chip">{t}</span>)}</div>
+          </a>
+        ))}
+      </div>
+    )}
+
+    <div style="margin-top:var(--space-16);">
+      <NewsletterSignup light id="newsletter-email-page" />
+    </div>
+  </div>
+</section>
+
+</BaseLayout>

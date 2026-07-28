@@ -1,0 +1,509 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NewsletterSignup from '../components/NewsletterSignup.astro';
+
+const allProducts = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
+const flagship = allProducts.find((p) => p.data.flagship)!;
+const rest = allProducts.filter((p) => !p.data.flagship);
+const rowTwo = rest.slice(1, 4); // Drive, Inventory, PM
+const wideCard = rest[4]; // Connect
+const aiCard = rest[0]; // AI, completes the flagship row
+
+const recentPosts = (await getCollection('blog'))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+function cardIcon(p: (typeof allProducts)[number]) {
+  return p.data.icon
+    ? { img: p.data.icon }
+    : { initials: p.data.iconInitials };
+}
+
+const statusBadge: Record<string, string> = {
+  'flagship-live': 'badge-live',
+  'in-development': 'badge-soon',
+  planned: 'badge-planned',
+};
+---
+<BaseLayout
+  title="Tixible — A technology company building an ecosystem of products"
+  description="Tixible is a technology company building a family of connected products for developers, businesses, and teams who think long-term. Tixible Cloud is our flagship platform."
+>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-copy">
+      <div class="eyebrow eyebrow-light">Tixible — the company behind the ecosystem</div>
+      <h1>Software built as an ecosystem,<br><span>not a single app.</span></h1>
+      <p class="hero-sub">Tixible is a technology company designing a family of connected products for developers, businesses, and teams that plan to be around for the long run. Tixible Cloud is our flagship platform — the first product in a growing ecosystem.</p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn btn-primary btn-lg">Get Started</a>
+        <a href="/products" class="btn btn-ghost btn-lg">Explore Products</a>
+      </div>
+      <div class="hero-meta">
+        <div class="hero-meta-item"><svg width="16" height="16"><use href="#i-check-circle"/></svg> Founder-led</div>
+        <div class="hero-meta-item"><svg width="16" height="16"><use href="#i-check-circle"/></svg> Developer-first architecture</div>
+        <div class="hero-meta-item"><svg width="16" height="16"><use href="#i-check-circle"/></svg> Built to scale with you</div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="orbit-frame">
+        <div class="orbit-center">
+          <div class="orbit-ring r1"></div>
+          <div class="orbit-ring r2"></div>
+          <div class="orbit-ring r3"></div>
+          <img class="orbit-core" src="/assets/brand/tixible/icon.webp" width="92" height="92" alt="Tixible">
+          <div class="orbit-nodes-wrap">
+            {allProducts.map((p, i) => (
+              <div class={`orbit-node n${i + 1}`}>
+                <span class="dot" style={`background:linear-gradient(135deg,${p.data.accentFrom},${p.data.accentTo});`}>
+                  {p.data.iconInitials ?? p.data.name.replace('Tixible ', '').slice(0, 2)}
+                </span>
+                {p.data.name}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TRUST STRIP ================= -->
+<section class="trust-strip">
+  <div class="container">
+    <div class="trust-grid">
+      <div class="trust-item" data-reveal><span class="trust-icon"><svg width="20" height="20"><use href="#i-users"/></svg></span><span>Built for modern teams</span></div>
+      <div class="trust-item" data-reveal><span class="trust-icon"><svg width="20" height="20"><use href="#i-code"/></svg></span><span>Developer-friendly</span></div>
+      <div class="trust-item" data-reveal><span class="trust-icon"><svg width="20" height="20"><use href="#i-building"/></svg></span><span>Enterprise-ready</span></div>
+      <div class="trust-item" data-reveal><span class="trust-icon"><svg width="20" height="20"><use href="#i-shield"/></svg></span><span>Secure by design</span></div>
+      <div class="trust-item" data-reveal><span class="trust-icon"><svg width="20" height="20"><use href="#i-layers"/></svg></span><span>Scalable architecture</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section class="section-pad" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div data-reveal>
+        <div class="eyebrow">About Tixible</div>
+        <h2 style="font-size:var(--text-4xl);margin-bottom:var(--space-5);">Why Tixible exists</h2>
+        <p style="font-size:var(--text-md);margin-bottom:var(--space-4);">Most software companies ship one product, then spend years bolting features onto it until it strains under its own weight. We think that's the wrong shape for a company that wants to matter in ten years, not just this quarter.</p>
+        <p style="margin-bottom:var(--space-4);">Tixible is built the other way around: as a set of focused products that share one architecture, one design system, and one account — so each new product makes the others more useful, instead of more complicated.</p>
+        <p>Tixible Cloud is the first product we've brought to that standard. It won't be the last.</p>
+        <div class="about-stats">
+          <div class="stat-card"><strong>{allProducts.length}</strong><span>Products in the roadmap</span></div>
+          <div class="stat-card"><strong>1</strong><span>Flagship platform, live today</span></div>
+        </div>
+      </div>
+      <div class="about-panel" data-reveal>
+        <div class="about-panel-row">
+          <svg width="20" height="20"><use href="#i-target"/></svg>
+          <div><h4>The problem</h4><p>Growing teams end up stitching together disconnected tools that were never built to work with each other.</p></div>
+        </div>
+        <div class="about-panel-row">
+          <svg width="20" height="20"><use href="#i-compass"/></svg>
+          <div><h4>Our approach</h4><p>One company, one design system, one account — building products that are meant to be used together from day one.</p></div>
+        </div>
+        <div class="about-panel-row">
+          <svg width="20" height="20"><use href="#i-rocket"/></svg>
+          <div><h4>The ambition</h4><p>A durable platform company, built product by product, with the same care applied to the first release and the fiftieth.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PRODUCT ECOSYSTEM ================= -->
+<section class="section-pad" id="ecosystem" style="background:var(--color-bg-subtle);">
+  <div class="container">
+    <div class="section-head center">
+      <div class="eyebrow" style="justify-content:center;">The Ecosystem</div>
+      <h2>One account. A growing family of products.</h2>
+      <p>Tixible isn't building a single app — it's building a platform company. Each product below shares the same architecture, design system, and account, so they get better together.</p>
+    </div>
+
+    <div class="eco-grid">
+      <a href={`/products/${flagship.id}`} class="eco-card flagship card" data-reveal>
+        <div class="eco-flagship-left">
+          <div class="eco-top">
+            <img class="eco-icon" src={flagship.data.icon} alt="" loading="lazy" decoding="async" />
+            <span class="badge badge-live">{flagship.data.statusLabel}</span>
+          </div>
+          <h3 style="font-size:var(--text-xl);margin-top:var(--space-4);">{flagship.data.name}</h3>
+          <p>{flagship.data.summary}</p>
+        </div>
+        <div class="eco-flagship-right"><div class="eco-flagship-visual"></div></div>
+      </a>
+
+      <a href={`/products/${aiCard.id}`} class="eco-card card card-hover" data-reveal>
+        <div class="eco-top"><span class="eco-icon-mono">{aiCard.data.iconInitials}</span><span class={`badge ${statusBadge[aiCard.data.status]}`}>{aiCard.data.statusLabel}</span></div>
+        <h3>{aiCard.data.name}</h3>
+        <p>{aiCard.data.summary}</p>
+      </a>
+
+      {rowTwo.map((p) => (
+        <a href={`/products/${p.id}`} class="eco-card card card-hover" data-reveal>
+          <div class="eco-top"><span class="eco-icon-mono">{p.data.iconInitials}</span><span class={`badge ${statusBadge[p.data.status]}`}>{p.data.statusLabel}</span></div>
+          <h3>{p.data.name}</h3>
+          <p>{p.data.summary}</p>
+        </a>
+      ))}
+
+      <a href={`/products/${wideCard.id}`} class="eco-card eco-card-wide card card-hover" data-reveal>
+        <div class="eco-card-wide-main">
+          <div class="eco-top" style="margin-bottom:var(--space-3);"><span class="eco-icon-mono">{wideCard.data.iconInitials}</span><span class={`badge ${statusBadge[wideCard.data.status]}`}>{wideCard.data.statusLabel}</span></div>
+          <h3>{wideCard.data.name}</h3>
+          <p>{wideCard.data.summary}</p>
+        </div>
+        <div class="eco-card-wide-aside">
+          <p style="font-size:var(--text-sm);color:var(--color-text-tertiary);max-width:220px;">More modules are on the roadmap as the ecosystem grows.</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FLAGSHIP SPOTLIGHT ================= -->
+<section class="section-pad" id="flagship">
+  <div class="container">
+    <div class="spotlight" data-reveal>
+      <div class="spotlight-top">
+        <img src={flagship.data.icon} alt={flagship.data.name} loading="lazy" decoding="async" />
+        <div>
+          <span class="badge badge-dark">Flagship product</span>
+        </div>
+      </div>
+      <h2>{flagship.data.name} — {flagship.data.tagline}</h2>
+      <p class="lead">{flagship.data.summary}</p>
+
+      <div class="spotlight-grid">
+        {flagship.data.features.map((f) => (
+          <div class="spotlight-feature">
+            <svg width="22" height="22"><use href="#i-code"/></svg>
+            <h4>{f.title}</h4>
+            <p>{f.description}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="spotlight-foot">
+        <div class="spotlight-who">
+          {flagship.data.audience.map((a) => (
+            <div><strong>{a.title}</strong>{a.description}</div>
+          ))}
+        </div>
+        <div class="spotlight-cta">
+          <a href={`/products/${flagship.id}`} class="btn btn-primary">Explore Tixible Cloud</a>
+          <a href="#contact" class="btn btn-ghost">Read the docs</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WHY TIXIBLE ================= -->
+<section class="section-pad" id="why-tixible" style="background:var(--color-bg-subtle);">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Why Tixible</div>
+      <h2>What makes the company different</h2>
+      <p>Not the features — the structure underneath them. Here's what we optimize for that most software companies don't.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card card" data-reveal><div class="why-num">01</div><h3>A unified ecosystem</h3><p>Every product shares one account, one design system, and one architecture — instead of feeling bolted together.</p></div>
+      <div class="why-card card" data-reveal><div class="why-num">02</div><h3>Premium design philosophy</h3><p>Interfaces are treated as a product decision, not a final coat of paint applied at the end.</p></div>
+      <div class="why-card card" data-reveal><div class="why-num">03</div><h3>Developer-first approach</h3><p>Real APIs, real documentation, and tools built by people who ship software themselves.</p></div>
+      <div class="why-card card" data-reveal><div class="why-num">04</div><h3>Security-minded architecture</h3><p>Access, isolation, and data handling are designed in from the first line of code, not patched on later.</p></div>
+      <div class="why-card card" data-reveal><div class="why-num">05</div><h3>Long-term product thinking</h3><p>We'd rather ship fewer products well than many products carelessly.</p></div>
+      <div class="why-card card" data-reveal><div class="why-num">06</div><h3>Scalable company structure</h3><p>Built from day one to support many products under one roof, not just one app trying to become many.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MISSION / VISION / PRINCIPLES ================= -->
+<section class="section-pad mvp-bg">
+  <div class="container">
+    <div class="section-head center" style="margin-bottom:var(--space-10);">
+      <div class="eyebrow eyebrow-light" style="justify-content:center;">Direction</div>
+      <h2 style="color:#fff;">Mission, vision, and how we get there</h2>
+    </div>
+    <div class="mvp-grid" data-reveal>
+      <div class="mvp-card">
+        <div class="mvp-icon"><svg width="22" height="22"><use href="#i-target"/></svg></div>
+        <h3>Mission</h3>
+        <p>To build software that developers, businesses, and teams can depend on for years, not just for a launch quarter.</p>
+      </div>
+      <div class="mvp-card">
+        <div class="mvp-icon"><svg width="22" height="22"><use href="#i-compass"/></svg></div>
+        <h3>Vision</h3>
+        <p>A single ecosystem of connected products, trusted as the default infrastructure for the way modern teams build and operate.</p>
+      </div>
+      <div class="mvp-card">
+        <div class="mvp-icon"><svg width="22" height="22"><use href="#i-rocket"/></svg></div>
+        <h3>Long-term direction</h3>
+        <p>Every product we ship should make the next one easier to build — and the whole ecosystem more valuable together.</p>
+      </div>
+    </div>
+
+    <div class="principles-list">
+      <div class="principle" data-reveal><span class="mark">01</span><h4>Design first</h4><p>Every interface earns its place before it ships.</p></div>
+      <div class="principle" data-reveal><span class="mark">02</span><h4>Security by default</h4><p>Safe configurations are the standard, not the upgrade.</p></div>
+      <div class="principle" data-reveal><span class="mark">03</span><h4>Build for the long term</h4><p>We choose durable architecture over shortcuts.</p></div>
+      <div class="principle" data-reveal><span class="mark">04</span><h4>Ship with intention</h4><p>Fewer things, built properly, beats more things built fast.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= COMPANY STORY / TIMELINE ================= -->
+<section class="section-pad" id="story">
+  <div class="container">
+    <div class="section-head center">
+      <div class="eyebrow" style="justify-content:center;">Company Story</div>
+      <h2>How Tixible is being built</h2>
+      <p>Tixible is an early, founder-led company. This is the path from first idea to growing ecosystem.</p>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item" data-reveal>
+        <div class="timeline-dot"><svg width="16" height="16"><use href="#i-sparkles"/></svg></div>
+        <div class="timeline-year">Phase 01 — Foundation</div>
+        <h3>Tixible is founded</h3>
+        <p>Tixible starts as a founder-led company with one conviction: software worth trusting is built as a system, not a stack of one-off apps.</p>
+      </div>
+      <div class="timeline-item" data-reveal>
+        <div class="timeline-dot"><svg width="16" height="16"><use href="#i-code"/></svg></div>
+        <div class="timeline-year">Phase 02 — First product</div>
+        <h3>The first architecture takes shape</h3>
+        <p>Early work goes into the shared foundation — design system, account model, and infrastructure — that every future Tixible product will build on.</p>
+      </div>
+      <div class="timeline-item" data-reveal>
+        <div class="timeline-dot"><svg width="16" height="16"><use href="#i-rocket"/></svg></div>
+        <div class="timeline-year">Phase 03 — Flagship</div>
+        <h3>Tixible Cloud launches</h3>
+        <p>Tixible Cloud becomes the first product built to the Tixible standard — proof of what the ecosystem is meant to feel like.</p>
+      </div>
+      <div class="timeline-item" data-reveal>
+        <div class="timeline-dot"><svg width="16" height="16"><use href="#i-layers"/></svg></div>
+        <div class="timeline-year">Phase 04 — Now</div>
+        <h3>Ecosystem expansion begins</h3>
+        <p>Tixible AI, Drive, Inventory, PM, and Connect move from concept to roadmap, each designed to extend Tixible Cloud rather than compete with it.</p>
+      </div>
+      <div class="timeline-item future" data-reveal>
+        <div class="timeline-dot"><svg width="16" height="16"><use href="#i-compass"/></svg></div>
+        <div class="timeline-year">What's next</div>
+        <h3>A complete platform company</h3>
+        <p>The long-term goal: a full family of Tixible products, one account, one design language, built for the next decade of software.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOUNDER ================= -->
+<section class="section-pad" id="founder" style="background:var(--color-bg-subtle);">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Founder</div>
+      <h2>Founder-led, by design</h2>
+    </div>
+    <div class="founder-grid">
+      <div class="founder-card" data-reveal>
+        <img class="founder-avatar-photo" src="/assets/founder.webp" width="96" height="96" alt="Emmanuel Chukwunweike Nwakor, Founder and CEO of Tixible" loading="lazy" decoding="async" />
+        <h3>Emmanuel Chukwunweike Nwakor</h3>
+        <div class="role">Founder &amp; CEO, Tixible</div>
+        <div class="founder-socials">
+          <a href="#" aria-label="GitHub" title="Add your GitHub profile"><svg width="16" height="16"><use href="#i-github"/></svg></a>
+          <a href="#" aria-label="LinkedIn" title="Add your LinkedIn profile"><svg width="16" height="16"><use href="#i-linkedin"/></svg></a>
+          <a href="#" aria-label="X / Twitter" title="Add your X profile"><svg width="16" height="16"><use href="#i-x-social"/></svg></a>
+          <a href="#" aria-label="Instagram" title="Add your Instagram profile"><svg width="16" height="16"><use href="#i-instagram"/></svg></a>
+          <a href="#" aria-label="YouTube" title="Add your YouTube channel"><svg width="16" height="16"><use href="#i-youtube"/></svg></a>
+        </div>
+        <div class="founder-meta">
+          <div><svg width="16" height="16"><use href="#i-mail"/></svg><span>[YOUR EMAIL]</span></div>
+          <div><svg width="16" height="16"><use href="#i-phone"/></svg><span>+234 903 521 1405</span></div>
+          <div><svg width="16" height="16"><use href="#i-pin"/></svg><span>Abuja, Nigeria</span></div>
+        </div>
+      </div>
+      <div data-reveal>
+        <p class="founder-quote">"I want Tixible to be the kind of company that's still shipping thoughtful software <span>ten years from now</span> — not the kind that ships one app and calls it a platform."</p>
+        <div class="founder-bio">
+          <p>Tixible is founded and owned by Emmanuel Chukwunweike Nwakor, a founder who cares about design, product quality, clean software architecture, and the discipline it takes to build a real ecosystem of tools over time — not just a single app with a good launch week.</p>
+          <p>That shows up in how Tixible is structured from day one: a shared design system, a shared account model, and a shared architecture across every product, so the ecosystem compounds instead of fragmenting as it grows.</p>
+          <p>Tixible Cloud is the first proof of that approach. The products that follow it are held to the same standard.</p>
+        </div>
+        <div class="founder-signoff">
+          <img src="/assets/brand/tixible/icon.webp" width="40" height="40" alt="" style="width:40px;height:40px;border-radius:10px;" loading="lazy" decoding="async" />
+          <div>
+            <div class="founder-signoff-name">Emmanuel Chukwunweike Nwakor</div>
+            <div class="founder-signoff-role">Founder &amp; CEO, Tixible</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FROM THE BLOG ================= -->
+{recentPosts.length > 0 && (
+  <section class="section-pad">
+    <div class="container">
+      <div class="section-head center">
+        <div class="eyebrow" style="justify-content:center;">From the blog</div>
+        <h2>Notes from Tixible</h2>
+        <p>Product updates and thinking behind the ecosystem, written as it happens.</p>
+      </div>
+      <div class="blog-grid">
+        {recentPosts.map((post) => (
+          <a href={`/blog/${post.id}`} class="blog-card card card-hover" data-reveal>
+            <div class="blog-card-meta">
+              <svg width="14" height="14"><use href="#i-calendar"/></svg>
+              {post.data.pubDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+            </div>
+            <h2>{post.data.title}</h2>
+            <p>{post.data.description}</p>
+            <div class="tags">{post.data.tags.map((t) => <span class="tag-chip">{t}</span>)}</div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+<!-- ================= CAREERS ================= -->
+<section class="section-pad" id="careers">
+  <div class="container">
+    <div class="careers-wrap">
+      <div data-reveal>
+        <div class="eyebrow">Careers</div>
+        <h2 style="font-size:var(--text-4xl);margin-bottom:var(--space-5);">Help build the ecosystem</h2>
+        <p style="font-size:var(--text-md);margin-bottom:var(--space-6);">Tixible is early and founder-led. We're not hiring at scale yet — but we're already thinking about the kind of people we'll want to bring on first.</p>
+        <div class="careers-values">
+          <div class="careers-value"><h4>Ownership</h4><p>You'll build things end to end, not a sliver of a ticket.</p></div>
+          <div class="careers-value"><h4>Craft</h4><p>We'd rather do less, and do it properly.</p></div>
+          <div class="careers-value"><h4>Curiosity</h4><p>Good questions matter as much as fast answers.</p></div>
+          <div class="careers-value"><h4>Long-term thinking</h4><p>We're building for years, not for a demo.</p></div>
+        </div>
+      </div>
+      <div data-reveal>
+        <div class="careers-roles">
+          <a class="role-row" href="#contact"><div><h4>Founding Product Engineer</h4><span>Remote · Future opening</span></div><svg class="arrow" width="18" height="18"><use href="#i-arrow-right"/></svg></a>
+          <a class="role-row" href="#contact"><div><h4>Product Designer</h4><span>Remote · Future opening</span></div><svg class="arrow" width="18" height="18"><use href="#i-arrow-right"/></svg></a>
+          <a class="role-row" href="#contact"><div><h4>Developer Relations</h4><span>Remote · Future opening</span></div><svg class="arrow" width="18" height="18"><use href="#i-arrow-right"/></svg></a>
+          <a class="role-row" href="#contact"><div><h4>Don't see your role?</h4><span>Introduce yourself anyway</span></div><svg class="arrow" width="18" height="18"><use href="#i-arrow-right"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section class="section-pad" id="contact" style="background:var(--color-bg-subtle);">
+  <div class="container">
+    <div class="section-head center">
+      <div class="eyebrow" style="justify-content:center;">Contact</div>
+      <h2>Talk to Tixible</h2>
+      <p>Whether you're exploring Tixible Cloud, thinking about a partnership, or just want to say hello — here's how to reach us.</p>
+    </div>
+
+    <div class="contact-grid">
+      <div data-reveal>
+        <div class="contact-channels">
+          <div class="contact-channel">
+            <div class="contact-channel-left"><span class="contact-channel-icon"><svg width="18" height="18"><use href="#i-zap"/></svg></span><div><h4>Sales</h4><p>Pricing and plans for your team</p></div></div>
+            <a class="link" href="mailto:sales@tixible.com">sales@tixible.com</a>
+          </div>
+          <div class="contact-channel">
+            <div class="contact-channel-left"><span class="contact-channel-icon"><svg width="18" height="18"><use href="#i-building"/></svg></span><div><h4>Enterprise</h4><p>Security, compliance, and scale</p></div></div>
+            <a class="link" href="mailto:enterprise@tixible.com">enterprise@tixible.com</a>
+          </div>
+          <div class="contact-channel">
+            <div class="contact-channel-left"><span class="contact-channel-icon"><svg width="18" height="18"><use href="#i-git-branch"/></svg></span><div><h4>Partnerships</h4><p>Integrations and collaborations</p></div></div>
+            <a class="link" href="mailto:partners@tixible.com">partners@tixible.com</a>
+          </div>
+          <div class="contact-channel">
+            <div class="contact-channel-left"><span class="contact-channel-icon"><svg width="18" height="18"><use href="#i-shield"/></svg></span><div><h4>Support</h4><p>Help with an existing product</p></div></div>
+            <a class="link" href="mailto:support@tixible.com">support@tixible.com</a>
+          </div>
+          <div class="contact-channel">
+            <div class="contact-channel-left"><span class="contact-channel-icon"><svg width="18" height="18"><use href="#i-sparkles"/></svg></span><div><h4>Media</h4><p>Press and brand inquiries</p></div></div>
+            <a class="link" href="mailto:press@tixible.com">press@tixible.com</a>
+          </div>
+          <div class="contact-channel">
+            <div class="contact-channel-left"><span class="contact-channel-icon"><svg width="18" height="18"><use href="#i-users"/></svg></span><div><h4>Careers</h4><p>Introduce yourself</p></div></div>
+            <a class="link" href="mailto:careers@tixible.com">careers@tixible.com</a>
+          </div>
+        </div>
+
+        <div class="contact-direct">
+          <dl>
+            <dt>Full Name</dt><dd>Emmanuel Chukwunweike Nwakor</dd>
+            <dt>Company</dt><dd>Tixible</dd>
+            <dt>Role</dt><dd>Founder / CEO</dd>
+            <dt>Email</dt><dd>[YOUR EMAIL ADDRESS]</dd>
+            <dt>Phone / WhatsApp</dt><dd>+234 903 521 1405</dd>
+            <dt>Location</dt><dd>Abuja, Nigeria</dd>
+            <dt>Website</dt><dd>tixible.com</dd>
+            <dt>GitHub</dt><dd>[YOUR GITHUB PROFILE]</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div data-reveal>
+        <!-- TODO: swap data-contact-email for your real inbox once confirmed -->
+        <form class="form-card" id="contactForm" novalidate data-contact-email="hello@tixible.com">
+          <div class="form-row">
+            <div class="field"><label for="fullName">Full name</label><input id="fullName" name="fullName" type="text" placeholder="Jane Doe" maxlength="120" required></div>
+            <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" placeholder="you@company.com" maxlength="180" required></div>
+          </div>
+          <div class="form-row">
+            <div class="field"><label for="company">Company</label><input id="company" name="company" type="text" placeholder="Company name" maxlength="150"></div>
+            <div class="field">
+              <label for="subject">Subject</label>
+              <select id="subject" name="subject" required>
+                <option value="">Choose a topic</option>
+                <option>Sales</option>
+                <option>Enterprise</option>
+                <option>Partnerships</option>
+                <option>Support</option>
+                <option>Media</option>
+                <option>Careers</option>
+                <option>Something else</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Tell us a bit about what you're looking for..." maxlength="4000" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block btn-lg">Send Message</button>
+          <div class="form-note"><svg width="14" height="14"><use href="#i-lock"/></svg> We'll only use this to respond to your message.</div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FINAL CTA ================= -->
+<section class="section-pad">
+  <div class="container">
+    <div class="final-cta" data-reveal>
+      <h2>Ready to explore Tixible?</h2>
+      <p>Start with Tixible Cloud, or take a look at where the rest of the ecosystem is headed.</p>
+      <div class="final-cta-buttons">
+        <a href={`/products/${flagship.id}`} class="btn btn-primary btn-lg">Get Started with Tixible Cloud</a>
+        <a href="/products" class="btn btn-ghost btn-lg">View the Ecosystem</a>
+      </div>
+      <div class="final-cta-links">
+        <a href={`/products/${flagship.id}`}>Read the docs <svg width="14" height="14"><use href="#i-arrow-up-right"/></svg></a>
+        <a href="#contact">Contact us <svg width="14" height="14"><use href="#i-arrow-up-right"/></svg></a>
+        <a href="#system-status">View system status <svg width="14" height="14"><use href="#i-arrow-up-right"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</BaseLayout>

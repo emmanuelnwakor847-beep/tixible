@@ -1,0 +1,69 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts
+    .filter((p) => !p.data.draft)
+    .map((post) => ({
+      params: { slug: post.id },
+      props: { post },
+    }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const blogPostingSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.pubDate.toISOString(),
+  dateModified: (post.data.updatedDate ?? post.data.pubDate).toISOString(),
+  author: {
+    '@type': 'Person',
+    name: post.data.author,
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Tixible',
+  },
+};
+---
+<BaseLayout
+  title={`${post.data.title} — Tixible Blog`}
+  description={post.data.description}
+  ogType="article"
+  structuredData={blogPostingSchema}
+>
+
+<section class="post-hero">
+  <div class="container post-hero-inner">
+    <a href="/blog" class="back-link"><svg width="14" height="14"><use href="#i-arrow-left"/></svg> All posts</a>
+    <h1>{post.data.title}</h1>
+    <div class="post-meta">
+      <span><svg width="14" height="14"><use href="#i-calendar"/></svg> {post.data.pubDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+      <span><svg width="14" height="14"><use href="#i-users"/></svg> {post.data.author}</span>
+    </div>
+  </div>
+</section>
+
+<article class="container">
+  <div class="post-body">
+    <Content />
+  </div>
+</article>
+
+<div class="post-cta container">
+  <div class="final-cta" data-reveal style="padding:var(--space-12) var(--space-8);">
+    <h2 style="font-size:var(--text-2xl);">Enjoyed this?</h2>
+    <p>Get the next one straight to your inbox.</p>
+    <div class="final-cta-buttons" style="margin-bottom:0;">
+      <a href="/blog" class="btn btn-ghost btn-lg">Read more posts</a>
+    </div>
+  </div>
+</div>
+
+</BaseLayout>
