@@ -1,0 +1,39 @@
+---
+import LegalLayout from '../../layouts/LegalLayout.astro';
+---
+<LegalLayout
+  title="Security & Responsible Disclosure"
+  description="How Tixible approaches security, and how to report a vulnerability responsibly."
+  updated="July 2026"
+>
+
+<h2>Our approach</h2>
+<p>tixible.com is a static website — there's no database of user accounts or payment information to protect on this site today. Even so, we treat security as a default, not an afterthought:</p>
+<ul>
+  <li>The site is served entirely over HTTPS, with HTTP requests automatically redirected.</li>
+  <li>We apply security headers (Content-Security-Policy, X-Content-Type-Options, Referrer-Policy, and others) to reduce the risk of common web attacks like cross-site scripting.</li>
+  <li>The contact form includes spam-prevention measures and does not store submitted data on our infrastructure — it's relayed directly through your own email client.</li>
+  <li>Dependencies are kept up to date and periodically scanned for known vulnerabilities.</li>
+</ul>
+<p>As Closure moves from concept validation toward a real product handling real user data, this page will expand to cover our data security practices in more depth.</p>
+
+<h2>Responsible disclosure</h2>
+<p>If you believe you've found a security vulnerability in tixible.com or, once available, Closure, we want to know about it — and we'll treat your report seriously and in good faith.</p>
+<p><strong>Please do:</strong></p>
+<ul>
+  <li>Report the issue to <a href="mailto:security@tixible.com">security@tixible.com</a> with enough detail to reproduce it.</li>
+  <li>Give us a reasonable amount of time to investigate and address the issue before disclosing it publicly.</li>
+  <li>Make a good-faith effort to avoid privacy violations, data destruction, or service disruption while investigating.</li>
+</ul>
+<p><strong>Please don't:</strong></p>
+<ul>
+  <li>Access, modify, or delete data that isn't yours.</li>
+  <li>Run automated scanning tools that could degrade service for other visitors.</li>
+  <li>Publicly disclose the issue before we've had a chance to address it.</li>
+</ul>
+<p>We don't currently run a paid bug bounty program, but we will credit responsible disclosures (with your permission) and respond to every genuine report.</p>
+
+<h2>Contact</h2>
+<p>Security issues: <a href="mailto:security@tixible.com">security@tixible.com</a>. Everything else: <a href="mailto:hello@tixible.com">hello@tixible.com</a>.</p>
+
+</LegalLayout>

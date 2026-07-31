@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const stages = [
+  { name: 'Research & discovery', done: true },
+  { name: 'Concept validation', done: true, current: true },
+  { name: 'Prototype', done: false },
+  { name: 'Internal development', done: false },
+  { name: 'Private alpha', done: false },
+  { name: 'Private beta', done: false },
+  { name: 'Public beta', done: false },
+  { name: 'General availability', done: false },
+];
+---
+<BaseLayout title="Roadmap — Tixible" description="Where Closure actually stands in its product lifecycle, and what happens at each stage before it moves to the next.">
+
+<section class="blog-hero">
+  <div class="container">
+    <div class="eyebrow">Roadmap</div>
+    <h1>One product, moving one stage at a time</h1>
+    <p>Tixible doesn't publish a roadmap of future products — see <a href="/#why-tixible">why</a>. What we do publish is exactly where Closure sits in its own lifecycle, updated as it actually moves, not as we hope it will.</p>
+  </div>
+</section>
+
+<section class="section-pad">
+  <div class="container" style="max-width:640px;">
+    <div class="timeline">
+      {stages.map((s, i) => (
+        <div class={`timeline-item ${s.done ? '' : 'future'}`}>
+          <div class="timeline-dot">{i + 1}</div>
+          <div class="timeline-year">{s.current ? 'Closure is here now' : s.done ? 'Complete' : 'Not started'}</div>
+          <h3>{s.name}</h3>
+        </div>
+      ))}
+    </div>
+    <p style="margin-top:var(--space-8);font-size:var(--text-sm);color:var(--color-text-tertiary);">Closure moves to the next stage only when the current one has genuinely earned it — real field evidence, not a calendar date.</p>
+  </div>
+</section>
+
+</BaseLayout>

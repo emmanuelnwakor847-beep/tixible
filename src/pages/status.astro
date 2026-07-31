@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const components = [
+  { name: 'tixible.com website', state: 'operational', note: 'Live and serving normally.' },
+  { name: 'Contact form', state: 'operational', note: 'Delivered via your own email client — no backend to go down.' },
+  { name: 'Closure', state: 'building', note: 'Concept validation — not yet available to use.' },
+];
+
+const stateMeta: Record<string, { label: string; dotClass: string }> = {
+  operational: { label: 'Operational', dotClass: 'pulse' },
+  building: { label: 'In development', dotClass: 'pulse pulse-amber' },
+};
+---
+<BaseLayout title="Status — Tixible" description="An honest, current look at what's live and what's still being built at Tixible.">
+
+<section class="blog-hero">
+  <div class="container">
+    <div class="eyebrow">Status</div>
+    <h1>Where things actually stand</h1>
+    <p>Tixible is pre-launch. This page says exactly what's live and what isn't — no inflated "all systems operational" badge for things that don't exist yet.</p>
+  </div>
+</section>
+
+<section class="section-pad">
+  <div class="container" style="max-width:640px;">
+    <div class="careers-values" style="grid-template-columns:1fr;gap:var(--space-3);">
+      {components.map((c) => (
+        <div class="careers-value" style="display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);">
+          <div>
+            <h4>{c.name}</h4>
+            <p>{c.note}</p>
+          </div>
+          <span class="footer-status" style="color:var(--color-text-secondary);white-space:nowrap;">
+            <span class={stateMeta[c.state].dotClass}></span>
+            {stateMeta[c.state].label}
+          </span>
+        </div>
+      ))}
+    </div>
+    <p style="margin-top:var(--space-8);font-size:var(--text-sm);color:var(--color-text-tertiary);">This is a manually maintained status page, not yet backed by automated uptime monitoring. We'll upgrade this once real infrastructure exists to monitor.</p>
+  </div>
+</section>
+
+</BaseLayout>

@@ -19,5 +19,8 @@ npm-debug.log*
 # local tooling config
 .claude/
 
+# internal planning docs, not part of the public site
+PRODUCTION RELEASE DIRECTIVE.md
+
 .vercel
 .env*

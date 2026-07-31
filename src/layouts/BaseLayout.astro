@@ -29,7 +29,7 @@ const organizationSchema = {
   name: 'Tixible',
   url: 'https://tixible.com',
   logo: new URL('/assets/brand/tixible/icon.png', Astro.site).toString(),
-  description: 'Tixible is a technology company building a family of connected products for developers, businesses, and teams who think long-term.',
+  description: 'Tixible is a technology company currently focused on Closure, a daily decision companion that helps small business owners know the truth about their business every night.',
   founder: {
     '@type': 'Person',
     name: 'Emmanuel Chukwunweike Nwakor',
@@ -96,7 +96,6 @@ function toSafeJson(obj: unknown) {
   <slot />
 </main>
 <Footer />
-<div class="toast" id="toast"><svg width="18" height="18"><use href="#i-check-circle"/></svg><span id="toastMsg">Message sent</span></div>
 <script src="../scripts/main.js"></script>
 </body>
 </html>

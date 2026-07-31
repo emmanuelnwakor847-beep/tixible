@@ -9,15 +9,22 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "lint:js": "eslint src/scripts/*.js",
+    "lint:css": "stylelint \"src/styles/**/*.css\"",
+    "lint:html": "html-validate \"dist/**/*.html\"",
+    "lint": "npm run lint:js && npm run lint:css",
+    "check:links": "linkinator dist --recurse --silent --skip \"https://tixible.com/**\""
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.2.1",
     "astro": "^7.1.4"
   },
   "devDependencies": {
+    "@lhci/cli": "^0.15.1",
     "eslint": "^10.8.0",
     "html-validate": "^11.0.0",
+    "linkinator": "^8.0.3",
     "stylelint": "^17.14.1",
     "stylelint-config-standard": "^40.0.0",
     "vercel": "^58.0.0"

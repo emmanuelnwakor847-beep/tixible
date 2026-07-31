@@ -3,16 +3,16 @@
 # SETUP REQUIRED before this works in production:
 # 1. Create a GitHub OAuth App (https://github.com/settings/developers) for this repo.
 # 2. Decap needs a small OAuth proxy to exchange the GitHub code for a token — deploy
-#    one as a Cloudflare Pages Function (e.g. https://github.com/sveltia/sveltia-cms-auth
-#    works for both Sveltia and Decap) and point `base_url` below at it.
+#    one as a Cloudflare Pages Function or Vercel serverless function (e.g.
+#    https://github.com/sveltia/sveltia-cms-auth works for both Sveltia and Decap)
+#    and point `base_url` below at it.
 # 3. Set the OAuth App's callback URL to `<base_url>/callback`.
-# 4. Update `repo` below to match this GitHub repository.
 #
 # Until that's done, this panel will load but "Login with GitHub" will fail.
 
 backend:
   name: github
-  repo: emmanuelnwakor847-beep/tixible-cloud
+  repo: emmanuelnwakor847-beep/tixible
   branch: main
   base_url: https://tixible-cms-auth.example.workers.dev
   auth_endpoint: auth
@@ -44,39 +44,12 @@ collections:
       - { label: Draft, name: draft, widget: boolean, default: true }
       - { label: Body, name: body, widget: markdown }
 
-  - name: products
-    label: Products
-    folder: src/content/products
-    create: true
-    slug: "{{slug}}"
-    extension: md
-    format: frontmatter
-    fields:
-      - { label: Name, name: name, widget: string }
-      - { label: Sort Order, name: order, widget: number }
-      - { label: Tagline, name: tagline, widget: string }
-      - label: Status
-        name: status
-        widget: select
-        options: ["flagship-live", "in-development", "planned"]
-      - { label: Status Label, name: statusLabel, widget: string }
-      - { label: Icon path (leave blank if using initials), name: icon, widget: string, required: false }
-      - { label: Icon initials (e.g. AI, PM), name: iconInitials, widget: string, required: false }
-      - { label: Accent color — from, name: accentFrom, widget: color }
-      - { label: Accent color — to, name: accentTo, widget: color }
-      - { label: Summary (card copy), name: summary, widget: text }
-      - { label: Is flagship product?, name: flagship, widget: boolean, default: false }
-      - { label: Publish Date, name: publishDate, widget: datetime }
-      - label: Audience
-        name: audience
-        widget: list
+  - name: pages
+    label: Pages
+    files:
+      - label: Closure product page
+        name: closure
+        file: src/pages/closure.astro
+        editor: { preview: false }
         fields:
-          - { label: Title, name: title, widget: string }
-          - { label: Description, name: description, widget: string }
-      - label: Features
-        name: features
-        widget: list
-        fields:
-          - { label: Title, name: title, widget: string }
-          - { label: Description, name: description, widget: string }
-      - { label: Body (full page content), name: body, widget: markdown }
+          - { label: "Raw source (advanced — edit with care, this is the full .astro file)", name: body, widget: code, default_language: html }

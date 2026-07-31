@@ -1,0 +1,24 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  updated: string;
+}
+const { title, description, updated } = Astro.props;
+---
+<BaseLayout title={`${title} — Tixible`} description={description}>
+<section class="blog-hero">
+  <div class="container">
+    <div class="eyebrow">Legal</div>
+    <h1>{title}</h1>
+    <p>Last updated {updated}</p>
+  </div>
+</section>
+<article class="container">
+  <div class="post-body">
+    <slot />
+  </div>
+</article>
+</BaseLayout>

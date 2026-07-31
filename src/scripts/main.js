@@ -10,30 +10,6 @@
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  // ---- Desktop mega menu (click + keyboard) ----
-  var productsTrigger = document.getElementById('productsTrigger');
-  var productsLi = productsTrigger ? productsTrigger.closest('li') : null;
-
-  function closeMega() {
-    if (!productsLi) return;
-    productsLi.classList.remove('open');
-    productsTrigger.setAttribute('aria-expanded', 'false');
-  }
-  function toggleMega(e) {
-    e.stopPropagation();
-    var isOpen = productsLi.classList.toggle('open');
-    productsTrigger.setAttribute('aria-expanded', String(isOpen));
-  }
-  if (productsTrigger) {
-    productsTrigger.addEventListener('click', toggleMega);
-    document.addEventListener('click', function (e) {
-      if (productsLi && !productsLi.contains(e.target)) closeMega();
-    });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') closeMega();
-    });
-  }
-
   // ---- Mobile menu ----
   var navToggle = document.getElementById('navToggle');
   var mobileMenu = document.getElementById('mobileMenu');
@@ -48,30 +24,13 @@
       setMenuOpen(open);
     });
   }
-  mobileMenu && mobileMenu.querySelectorAll('a.btn, .mobile-sub a').forEach(function (a) {
+  mobileMenu && mobileMenu.querySelectorAll('a').forEach(function (a) {
     a.addEventListener('click', function () { setMenuOpen(false); });
   });
-
-  var mobileProductsTrigger = document.getElementById('mobileProductsTrigger');
-  var mobileProductsSub = document.getElementById('mobileProductsSub');
-  if (mobileProductsTrigger) {
-    mobileProductsTrigger.addEventListener('click', function (e) {
-      e.preventDefault();
-      var open = mobileProductsSub.classList.toggle('open');
-      mobileProductsTrigger.setAttribute('aria-expanded', String(open));
-    });
-  }
 
   // Close mobile menu when resizing to desktop
   window.addEventListener('resize', function () {
     if (window.innerWidth > 980) setMenuOpen(false);
-  });
-
-  // ---- Smooth-scroll anchor close for mobile ----
-  document.querySelectorAll('a[href^="#"]').forEach(function (a) {
-    a.addEventListener('click', function () {
-      if (mobileMenu && mobileMenu.classList.contains('open')) setMenuOpen(false);
-    });
   });
 
   // ---- Scroll reveal ----
@@ -110,6 +69,15 @@
   if (form) {
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+
+      // Honeypot: real users never fill this hidden field, bots often do.
+      var honeypot = form.querySelector('[name="companyWebsite"]');
+      if (honeypot && honeypot.value) {
+        showToast('Thanks — your message has been sent.');
+        form.reset();
+        return;
+      }
+
       if (!form.checkValidity()) {
         form.reportValidity();
         return;

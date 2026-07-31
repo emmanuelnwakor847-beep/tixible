@@ -1,0 +1,99 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NewsletterSignup from '../components/NewsletterSignup.astro';
+
+const softwareAppSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'Closure',
+  description: 'Closure is a daily decision companion that helps small business owners know the truth about their business every night.',
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'Web',
+  applicationSubCategory: 'Concept Validation',
+  publisher: { '@type': 'Organization', name: 'Tixible' },
+};
+---
+<BaseLayout
+  title="Closure — a daily decision companion, by Tixible"
+  description="Closure helps small business owners know the truth about their business every night — one number, one action, no dashboard required. Currently in concept validation."
+  structuredData={softwareAppSchema}
+>
+
+<section class="product-hero">
+  <div class="container product-hero-inner">
+    <a href="/" class="back-link"><svg width="14" height="14"><use href="#i-arrow-left"/></svg> Back home</a>
+    <div class="product-hero-top">
+      <span class="product-hero-icon-mono" style="background:var(--gradient-primary);"><svg width="26" height="26"><use href="#i-moon"/></svg></span>
+      <span class="badge badge-soon">Concept Validation · Early Development</span>
+    </div>
+    <h1>Closure</h1>
+    <p class="tagline">A daily decision companion that helps small business owners know the truth about their business — every night.</p>
+    <div class="hero-cta" style="justify-content:flex-start;margin-top:var(--space-8);">
+      <a href="#follow" class="btn btn-primary btn-lg">Get Notified</a>
+      <a href="#overview" class="btn btn-ghost btn-lg">Follow Along</a>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad" id="overview">
+  <div class="container" style="max-width:760px;">
+    <div class="eyebrow">The problem</div>
+    <h2 style="font-size:var(--text-3xl);margin-bottom:var(--space-5);">Every business owner already closes their day. Closure just makes it certain.</h2>
+    <p style="font-size:var(--text-md);margin-bottom:var(--space-4);">A cash count. A notebook tally. A mental estimate on the drive home. Every small business owner already has some version of this ritual — Closure isn't asking anyone to adopt a new one. It sits inside the ritual that already exists and answers one question with certainty: <strong>did I actually make money today, and what's the one thing to do about it tomorrow.</strong></p>
+    <p>Closure is not a bookkeeping app. There's no dashboard to learn, no chart of accounts to set up. One number, one action — that's the whole product.</p>
+  </div>
+</section>
+
+<section class="section-pad mvp-bg">
+  <div class="container">
+    <div class="section-head center" style="margin-bottom:var(--space-10);">
+      <div class="eyebrow eyebrow-light" style="justify-content:center;">Direction</div>
+      <h2 style="color:#fff;">Mission &amp; vision</h2>
+    </div>
+    <div class="mvp-grid mvp-grid-2" data-reveal>
+      <div class="mvp-card">
+        <div class="mvp-icon"><svg width="22" height="22"><use href="#i-target"/></svg></div>
+        <h3>Mission</h3>
+        <p>To help every small business owner end each day knowing the truth about their business.</p>
+      </div>
+      <div class="mvp-card">
+        <div class="mvp-icon"><svg width="22" height="22"><use href="#i-compass"/></svg></div>
+        <h3>Vision</h3>
+        <p>To become the world's most trusted daily decision companion for every small business owner.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad">
+  <div class="container" style="max-width:760px;">
+    <div class="eyebrow">How trust is built</div>
+    <h2 style="font-size:var(--text-2xl);margin-bottom:var(--space-6);">Closure shows its reasoning — it doesn't replace your judgment</h2>
+    <div class="careers-values" style="grid-template-columns:1fr;gap:var(--space-4);">
+      <div class="careers-value"><h4>It shows its work</h4><p>Every number Closure gives you comes with the reasoning behind it, so you can check it against what you already know about your own business.</p></div>
+      <div class="careers-value"><h4>You can correct it</h4><p>If something looks wrong, you tell it — and it remembers that correction going forward. Closure earns trust one interaction at a time, not by claiming it upfront.</p></div>
+      <div class="careers-value"><h4>It competes with the notebook, not with other software</h4><p>The bar isn't "better than a spreadsheet tool." The bar is "better than the mental tally you already do at closing time."</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad" style="background:var(--color-navy);">
+  <div class="container" style="max-width:640px;text-align:center;">
+    <div class="eyebrow eyebrow-light" style="justify-content:center;">Where things stand</div>
+    <h2 style="color:#fff;font-size:var(--text-2xl);margin-bottom:var(--space-4);">We're building Closure with real business owners</h2>
+    <p style="color:var(--color-text-on-dark-secondary);">Closure is currently in concept validation — being shaped through direct conversations with the small business owners it's meant for, before a single feature is locked in. Details on how it works, what it costs, and when it's available are coming as that field work plays out, not before.</p>
+  </div>
+</section>
+
+<section class="section-pad" id="follow" style="background:var(--color-bg-subtle);">
+  <div class="container" style="max-width:640px;">
+    <div class="section-head center">
+      <div class="eyebrow" style="justify-content:center;">Stay close to it</div>
+      <h2>Follow Closure as it's built</h2>
+      <p>No pitch, no waitlist games — just an honest look at the process as Closure moves through validation.</p>
+    </div>
+    <NewsletterSignup light />
+  </div>
+</section>
+
+</BaseLayout>
